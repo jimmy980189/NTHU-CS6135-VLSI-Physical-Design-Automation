@@ -1,0 +1,2 @@
+setPlaceMode -congEffort low -timingDriven 0 -clkGateAware 1 -powerDriven 0 -ignoreScan 1 -reorderScan 1 -ignoreSpare 0 -placeIOPins 1 -moduleAwareSpare 0 -preserveRouting 1 -rmAffectedRouting 0 -checkRoute 0 -swapEEQ 0
+create_clock [get_ports {clk}] -name VCLK -period 3.0 -waveform {0.0 1.50}
