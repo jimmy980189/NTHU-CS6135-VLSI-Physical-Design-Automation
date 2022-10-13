@@ -1,0 +1,11 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v20.10-p004_1, built Thu May 7 20:02:41 PDT 2020
+Options:	-no_gui -execute source apr.tcl 
+Date:		Thu Oct 13 12:55:24 2022
+Host:		ic51 (x86_64 w/Linux 3.10.0-1160.25.1.el7.x86_64) (16cores*64cpus*Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz 22528KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:

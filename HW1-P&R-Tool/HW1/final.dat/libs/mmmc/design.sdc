@@ -1,1 +1,1 @@
-/users/student/mr111/hccheng22/private/pda/HW1/design.sdc
+/users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/design.sdc

@@ -8,7 +8,7 @@
 current_design aes
 set_clock_gating_check -rise -setup 0 
 set_clock_gating_check -fall -setup 0 
-create_clock [get_ports {clk}] -name VCLK -period 3.0 -waveform {0.0 1.50}
+create_clock [get_ports {clk}] -name VCLK -period 3.5 -waveform {0.0 1.75}
 set_max_fanout 10  [get_ports {clk}]
 set_max_fanout 10  [get_ports {reset_n}]
 set_max_fanout 10  [get_ports {cs}]

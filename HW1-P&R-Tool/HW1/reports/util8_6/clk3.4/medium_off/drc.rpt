@@ -1,0 +1,25 @@
+ *** Starting Verify DRC (MEM: 1780.9) ***
+
+  VERIFY DRC ...... Starting Verification
+  VERIFY DRC ...... Initializing
+  VERIFY DRC ...... Deleting Existing Violations
+  VERIFY DRC ...... Creating Sub-Areas
+  VERIFY DRC ...... Using new threading
+ VERIFY DRC ...... Sub-Area: {0.000 142.560 71.280 211.120} 7 of 9  Thread : 4
+ VERIFY DRC ...... Sub-Area: {0.000 0.000 71.280 71.280} 1 of 9  Thread : 3
+ VERIFY DRC ...... Sub-Area: {142.560 0.000 212.610 71.280} 3 of 9  Thread : 7
+ VERIFY DRC ...... Sub-Area: {142.560 142.560 212.610 211.120} 9 of 9  Thread : 2
+ VERIFY DRC ...... Sub-Area: {71.280 142.560 142.560 211.120} 8 of 9  Thread : 2
+ VERIFY DRC ...... Sub-Area: {71.280 0.000 142.560 71.280} 2 of 9  Thread : 7
+ VERIFY DRC ...... Sub-Area: {0.000 71.280 71.280 142.560} 4 of 9  Thread : 7
+ VERIFY DRC ...... Sub-Area: {142.560 71.280 212.610 142.560} 6 of 9  Thread : 2
+ VERIFY DRC ...... Thread : 7 finished.
+ VERIFY DRC ...... Thread : 6 finished.
+ VERIFY DRC ...... Thread : 0 finished.
+ VERIFY DRC ...... Sub-Area: {71.280 71.280 142.560 142.560} 5 of 9  Thread : 2
+ VERIFY DRC ...... Thread : 2 finished.
+
+  Verification Complete : 0 Viols.
+
+ *** End Verify DRC (CPU: 0:00:03.2  ELAPSED TIME: 1.00  MEM: 113.0M) ***
+

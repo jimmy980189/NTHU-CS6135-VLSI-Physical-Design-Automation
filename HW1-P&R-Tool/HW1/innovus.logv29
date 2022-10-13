@@ -1,0 +1,301 @@
+[10/13 11:56:14      0s] 
+[10/13 11:56:14      0s] Cadence Innovus(TM) Implementation System.
+[10/13 11:56:14      0s] Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+[10/13 11:56:14      0s] 
+[10/13 11:56:14      0s] Version:	v20.10-p004_1, built Thu May 7 20:02:41 PDT 2020
+[10/13 11:56:14      0s] Options:	-no_gui -execute source apr.tcl 
+[10/13 11:56:14      0s] Date:		Thu Oct 13 11:56:14 2022
+[10/13 11:56:14      0s] Host:		ic51 (x86_64 w/Linux 3.10.0-1160.25.1.el7.x86_64) (16cores*64cpus*Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz 22528KB)
+[10/13 11:56:14      0s] OS:		CentOS Linux release 7.9.2009 (Core)
+[10/13 11:56:14      0s] 
+[10/13 11:56:14      0s] License:
+[10/13 11:56:14      0s] 		invs	Innovus Implementation System	20.1	checkout succeeded
+[10/13 11:56:14      0s] 		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+[10/13 11:56:25     10s] **WARN: (IMPOPT-801):	Genus executable not found in PATH. Install Genus, add the path to the genus executable in the PATH variable and rerun Innovus.
+[10/13 11:56:26     11s] @(#)CDS: Innovus v20.10-p004_1 (64bit) 05/07/2020 20:02 (Linux 2.6.32-431.11.2.el6.x86_64)
+[10/13 11:56:26     11s] @(#)CDS: NanoRoute 20.10-p004_1 NR200413-0234/20_10-UB (database version 18.20.505) {superthreading v1.69}
+[10/13 11:56:26     11s] @(#)CDS: AAE 20.10-p005 (64bit) 05/07/2020 (Linux 2.6.32-431.11.2.el6.x86_64)
+[10/13 11:56:26     11s] @(#)CDS: CTE 20.10-p005_1 () Apr 14 2020 09:14:28 ( )
+[10/13 11:56:26     11s] @(#)CDS: SYNTECH 20.10-b004_1 () Mar 12 2020 22:18:21 ( )
+[10/13 11:56:26     11s] @(#)CDS: CPE v20.10-p006
+[10/13 11:56:26     11s] @(#)CDS: IQuantus/TQuantus 19.1.3-s155 (64bit) Sun Nov 3 18:26:52 PST 2019 (Linux 2.6.32-431.11.2.el6.x86_64)
+[10/13 11:56:26     11s] @(#)CDS: OA 22.60-p028 Tue Dec  3 14:08:48 2019
+[10/13 11:56:26     11s] @(#)CDS: SGN 19.10-d001 (24-May-2019) (64 bit executable, Qt5.9.0)
+[10/13 11:56:26     11s] @(#)CDS: RCDB 11.15.0
+[10/13 11:56:26     11s] @(#)CDS: STYLUS 20.10-p002_1 (03/12/2020 10:11 PDT)
+[10/13 11:56:26     11s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_185069_ic51_hccheng22_1nkhla.
+
+[10/13 11:56:26     11s] Change the soft stacksize limit to 0.2%RAM (256 mbytes). Set global soft_stack_size_limit to change the value.
+[10/13 11:56:26     11s] 
+[10/13 11:56:26     11s] **INFO:  MMMC transition support version v31-84 
+[10/13 11:56:26     11s] 
+[10/13 11:56:26     11s] <CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+[10/13 11:56:26     11s] <CMD> suppressMessage ENCEXT-2799
+[10/13 11:56:27     11s] Executing cmd 'source apr.tcl' ...
+[10/13 11:56:27     11s] <CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+[10/13 11:56:27     11s] <CMD> suppressMessage ENCEXT-2799
+[10/13 11:56:27     11s] <CMD> win
+[10/13 11:56:27     11s] Cannot display window in tcl mode
+[10/13 11:56:27     11s] <CMD> setMultiCpuUsage -localCpu 8 -cpuPerRemoteHost 1 -remoteHost 0 -keepLicense true
+[10/13 11:56:27     11s] Setting releaseMultiCpuLicenseMode to false.
+[10/13 11:56:27     11s] <CMD> setDistributeHost -local
+[10/13 11:56:27     11s] The timeout for a remote job to respond is 3600 seconds.
+[10/13 11:56:27     11s] Submit command for task runs will be: local
+[10/13 11:56:27     11s] <CMD> setDesignMode -process 45
+[10/13 11:56:27     11s] ##  Process: 45            (User Set)               
+[10/13 11:56:27     11s] ##     Node: (not set)                           
+[10/13 11:56:27     11s] 
+##  Check design process and node:  
+##  Design tech node is not set.
+
+[10/13 11:56:27     11s] Applying the recommended capacitance filtering threshold values for 45nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+[10/13 11:56:27     11s] 	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+[10/13 11:56:27     11s] 	Capacitance filtering mode(-capFilterMode option of the setExtractRCMode) is 'relAndCoup' for all engines.
+[10/13 11:56:27     11s] 	The accuracy mode for postRoute effortLevel low extraction will be set to 'high'.
+[10/13 11:56:27     11s] 	Default value for EffortLevel(-effortLevel option of the setExtractRCMode) in postRoute extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+[10/13 11:56:27     11s] <CMD> set init_gnd_net VSS
+[10/13 11:56:27     11s] <CMD> set init_lef_file NangateOpenCellLibrary.lef
+[10/13 11:56:27     11s] <CMD> set init_design_settop 0
+[10/13 11:56:27     11s] <CMD> set init_verilog AES_1.v
+[10/13 11:56:27     11s] <CMD> set init_mmmc_file mmmc.view
+[10/13 11:56:27     11s] <CMD> set init_pwr_net VDD
+[10/13 11:56:27     11s] <CMD> init_design
+[10/13 11:56:27     11s] #% Begin Load MMMC data ... (date=10/13 11:56:27, mem=440.6M)
+[10/13 11:56:27     11s] #% End Load MMMC data ... (date=10/13 11:56:27, total cpu=0:00:00.0, real=0:00:00.0, peak res=440.8M, current mem=440.8M)
+[10/13 11:56:27     11s] 
+[10/13 11:56:27     11s] Loading LEF file NangateOpenCellLibrary.lef ...
+[10/13 11:56:27     11s] Set DBUPerIGU to M2 pitch 380.
+[10/13 11:56:27     11s] 
+[10/13 11:56:27     11s] viaInitial starts at Thu Oct 13 11:56:27 2022
+viaInitial ends at Thu Oct 13 11:56:27 2022
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+[10/13 11:56:27     11s] Loading view definition file from mmmc.view
+[10/13 11:56:27     11s] Starting library reading in 'Multi-threaded flow' (with '8' threads)
+[10/13 11:56:27     16s] Reading generic_library_set timing library /users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/NangateOpenCellLibrary.lib.
+[10/13 11:56:27     16s] Read 134 cells in library NangateOpenCellLibrary.
+[10/13 11:56:27     16s] Library reading multithread flow ended.
+[10/13 11:56:27     16s] Ending "PreSetAnalysisView" (total cpu=0:00:05.4, real=0:00:00.0, peak res=618.7M, current mem=459.9M)
+[10/13 11:56:27     16s] *** End library_loading (cpu=0.09min, real=0.00min, mem=51.0M, fe_cpu=0.28min, fe_real=0.22min, fe_mem=654.1M) ***
+[10/13 11:56:27     16s] #% Begin Load netlist data ... (date=10/13 11:56:27, mem=459.9M)
+[10/13 11:56:27     16s] *** Begin netlist parsing (mem=654.1M) ***
+[10/13 11:56:27     16s] Created 134 new cells from 1 timing libraries.
+[10/13 11:56:27     16s] Reading netlist ...
+[10/13 11:56:27     16s] Backslashed names will retain backslash and a trailing blank character.
+[10/13 11:56:28     16s] Reading verilog netlist 'AES_1.v'
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] *** Memory Usage v#1 (Current mem = 654.105M, initial mem = 268.254M) ***
+[10/13 11:56:28     17s] *** End netlist parsing (cpu=0:00:00.1, real=0:00:01.0, mem=654.1M) ***
+[10/13 11:56:28     17s] #% End Load netlist data ... (date=10/13 11:56:28, total cpu=0:00:00.1, real=0:00:01.0, peak res=469.3M, current mem=469.3M)
+[10/13 11:56:28     17s] Top level cell is aes.
+[10/13 11:56:28     17s] Hooked 134 DB cells to tlib cells.
+[10/13 11:56:28     17s] Ending "BindLib:" (total cpu=0:00:00.0, real=0:00:00.0, peak res=473.4M, current mem=473.4M)
+[10/13 11:56:28     17s] Starting recursive module instantiation check.
+[10/13 11:56:28     17s] No recursion found.
+[10/13 11:56:28     17s] Building hierarchical netlist for Cell aes ...
+[10/13 11:56:28     17s] *** Netlist is unique.
+[10/13 11:56:28     17s] Setting Std. cell height to 2800 DBU (smallest netlist inst).
+[10/13 11:56:28     17s] ** info: there are 135 modules.
+[10/13 11:56:28     17s] ** info: there are 16509 stdCell insts.
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] *** Memory Usage v#1 (Current mem = 675.520M, initial mem = 268.254M) ***
+[10/13 11:56:28     17s] Generated pitch 1.68 in metal10 is different from 1.6 defined in technology file in preferred direction.
+[10/13 11:56:28     17s] Generated pitch 0.84 in metal8 is different from 0.8 defined in technology file in preferred direction.
+[10/13 11:56:28     17s] Generated pitch 0.84 in metal7 is different from 0.8 defined in technology file in preferred direction.
+[10/13 11:56:28     17s] Set Default Net Delay as 1000 ps.
+[10/13 11:56:28     17s] Set Default Net Load as 0.5 pF. 
+[10/13 11:56:28     17s] Set Default Input Pin Transition as 0.1 ps.
+[10/13 11:56:28     17s] Extraction setup Started 
+[10/13 11:56:28     17s] Initializing multi-corner RC extraction with 1 active RC Corners ...
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M0 and M1 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M1 and M2 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M2 and M3 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M3 and M4 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M4 and M5 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M5 and M6 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M6 and M7 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M7 and M8 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M8 and M9 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2773):	The via resistance between layers M9 and M10 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+[10/13 11:56:28     17s] Type 'man IMPEXT-2773' for more detail.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M1 is not defined in the cap table. Therefore, the LEF value 0.38 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M2 is not defined in the cap table. Therefore, the LEF value 0.25 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M3 is not defined in the cap table. Therefore, the LEF value 0.25 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M4 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M5 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M6 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M7 is not defined in the cap table. Therefore, the LEF value 0.075 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M8 is not defined in the cap table. Therefore, the LEF value 0.075 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M9 is not defined in the cap table. Therefore, the LEF value 0.03 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] **WARN: (IMPEXT-2766):	The sheet resistance for layer M10 is not defined in the cap table. Therefore, the LEF value 0.03 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+[10/13 11:56:28     17s] Summary of Active RC-Corners : 
+[10/13 11:56:28     17s]  
+[10/13 11:56:28     17s]  Analysis View: generic_view
+[10/13 11:56:28     17s]     RC-Corner Name        : generic_rc_corner
+[10/13 11:56:28     17s]     RC-Corner Index       : 0
+[10/13 11:56:28     17s]     RC-Corner Temperature : 25 Celsius
+[10/13 11:56:28     17s]     RC-Corner Cap Table   : ''
+[10/13 11:56:28     17s]     RC-Corner PreRoute Res Factor         : 1
+[10/13 11:56:28     17s]     RC-Corner PreRoute Cap Factor         : 1
+[10/13 11:56:28     17s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[10/13 11:56:28     17s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[10/13 11:56:28     17s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[10/13 11:56:28     17s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from Cap Table]
+[10/13 11:56:28     17s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from Cap Table]
+[10/13 11:56:28     17s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 
+[10/13 11:56:28     17s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 
+[10/13 11:56:28     17s] LayerId::1 widthSet size::1
+[10/13 11:56:28     17s] LayerId::2 widthSet size::1
+[10/13 11:56:28     17s] LayerId::3 widthSet size::1
+[10/13 11:56:28     17s] LayerId::4 widthSet size::1
+[10/13 11:56:28     17s] LayerId::5 widthSet size::1
+[10/13 11:56:28     17s] LayerId::6 widthSet size::1
+[10/13 11:56:28     17s] LayerId::7 widthSet size::1
+[10/13 11:56:28     17s] LayerId::8 widthSet size::1
+[10/13 11:56:28     17s] LayerId::9 widthSet size::1
+[10/13 11:56:28     17s] LayerId::10 widthSet size::1
+[10/13 11:56:28     17s] Updating RC grid for preRoute extraction ...
+[10/13 11:56:28     17s] Initializing multi-corner resistance tables ...
+[10/13 11:56:28     17s] **Info: Trial Route has Max Route Layer 15/10.
+[10/13 11:56:28     17s] {RT generic_rc_corner 0 10 10 {4 1} {7 0} {9 0} 3}
+[10/13 11:56:28     17s] Preroute length aware model : LLS: 2-3 ; HLS: 3-5 ; rDens: 0.000000 ; uaWl: 0.000000 ; uaWlH: 0.000000 ; aWlH: 0.000000 ; Pmax: 0.850000 ; wcR: 0.000000 ; newSi: 0.000000 ; pMod: 80 ; 
+[10/13 11:56:28     17s] *Info: initialize multi-corner CTS.
+[10/13 11:56:28     17s] Ending "SetAnalysisView" (total cpu=0:00:00.2, real=0:00:00.0, peak res=656.4M, current mem=494.1M)
+[10/13 11:56:28     17s] Reading timing constraints file 'design.sdc' ...
+[10/13 11:56:28     17s] Current (total cpu=0:00:17.7, real=0:00:14.0, peak res=662.9M, current mem=662.9M)
+[10/13 11:56:28     17s] INFO (CTE): Constraints read successfully.
+[10/13 11:56:28     17s] Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=681.2M, current mem=681.2M)
+[10/13 11:56:28     17s] Current (total cpu=0:00:17.8, real=0:00:14.0, peak res=681.2M, current mem=681.2M)
+[10/13 11:56:28     17s] Creating Cell Server ...(0, 1, 1, 1)
+[10/13 11:56:28     17s] Summary for sequential cells identification: 
+[10/13 11:56:28     17s]   Identified SBFF number: 16
+[10/13 11:56:28     17s]   Identified MBFF number: 0
+[10/13 11:56:28     17s]   Identified SB Latch number: 0
+[10/13 11:56:28     17s]   Identified MB Latch number: 0
+[10/13 11:56:28     17s]   Not identified SBFF number: 0
+[10/13 11:56:28     17s]   Not identified MBFF number: 0
+[10/13 11:56:28     17s]   Not identified SB Latch number: 0
+[10/13 11:56:28     17s]   Not identified MB Latch number: 0
+[10/13 11:56:28     17s]   Number of sequential cells which are not FFs: 13
+[10/13 11:56:28     17s] Total number of combinational cells: 99
+[10/13 11:56:28     17s] Total number of sequential cells: 29
+[10/13 11:56:28     17s] Total number of tristate cells: 6
+[10/13 11:56:28     17s] Total number of level shifter cells: 0
+[10/13 11:56:28     17s] Total number of power gating cells: 0
+[10/13 11:56:28     17s] Total number of isolation cells: 0
+[10/13 11:56:28     17s] Total number of power switch cells: 0
+[10/13 11:56:28     17s] Total number of pulse generator cells: 0
+[10/13 11:56:28     17s] Total number of always on buffers: 0
+[10/13 11:56:28     17s] Total number of retention cells: 0
+[10/13 11:56:28     17s] List of usable buffers: BUF_X1 BUF_X2 BUF_X4 BUF_X8 BUF_X16 BUF_X32 CLKBUF_X1 CLKBUF_X2 CLKBUF_X3
+[10/13 11:56:28     17s] Total number of usable buffers: 9
+[10/13 11:56:28     17s] List of unusable buffers:
+[10/13 11:56:28     17s] Total number of unusable buffers: 0
+[10/13 11:56:28     17s] List of usable inverters: INV_X1 INV_X2 INV_X4 INV_X8 INV_X16 INV_X32
+[10/13 11:56:28     17s] Total number of usable inverters: 6
+[10/13 11:56:28     17s] List of unusable inverters:
+[10/13 11:56:28     17s] Total number of unusable inverters: 0
+[10/13 11:56:28     17s] List of identified usable delay cells:
+[10/13 11:56:28     17s] Total number of identified usable delay cells: 0
+[10/13 11:56:28     17s] List of identified unusable delay cells:
+[10/13 11:56:28     17s] Total number of identified unusable delay cells: 0
+[10/13 11:56:28     17s] Creating Cell Server, finished. 
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] No delay cells were detected in the set of buffers. Buffers will be used to fix hold violations.
+[10/13 11:56:28     17s] Deleting Cell Server ...
+[10/13 11:56:28     17s] Ending "Cell type marking" (total cpu=0:00:00.0, real=0:00:00.0, peak res=702.2M, current mem=702.2M)
+[10/13 11:56:28     17s] Creating Cell Server ...(0, 0, 0, 0)
+[10/13 11:56:28     17s] Summary for sequential cells identification: 
+[10/13 11:56:28     17s]   Identified SBFF number: 16
+[10/13 11:56:28     17s]   Identified MBFF number: 0
+[10/13 11:56:28     17s]   Identified SB Latch number: 0
+[10/13 11:56:28     17s]   Identified MB Latch number: 0
+[10/13 11:56:28     17s]   Not identified SBFF number: 0
+[10/13 11:56:28     17s]   Not identified MBFF number: 0
+[10/13 11:56:28     17s]   Not identified SB Latch number: 0
+[10/13 11:56:28     17s]   Not identified MB Latch number: 0
+[10/13 11:56:28     17s]   Number of sequential cells which are not FFs: 13
+[10/13 11:56:28     17s]  Visiting view : generic_view
+[10/13 11:56:28     17s]    : PowerDomain = none : Weighted F : unweighted  = 10.10 (1.000) with rcCorner = 0
+[10/13 11:56:28     17s]    : PowerDomain = none : Weighted F : unweighted  = 7.80 (1.000) with rcCorner = -1
+[10/13 11:56:28     17s]  Visiting view : generic_view
+[10/13 11:56:28     17s]    : PowerDomain = none : Weighted F : unweighted  = 10.10 (1.000) with rcCorner = 0
+[10/13 11:56:28     17s]    : PowerDomain = none : Weighted F : unweighted  = 7.80 (1.000) with rcCorner = -1
+[10/13 11:56:28     17s]  Setting StdDelay to 10.10
+[10/13 11:56:28     17s] Creating Cell Server, finished. 
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] *** Summary of all messages that are not suppressed in this session:
+[10/13 11:56:28     17s] Severity  ID               Count  Summary                                  
+[10/13 11:56:28     17s] WARNING   IMPEXT-2766         10  The sheet resistance for layer %s is not...
+[10/13 11:56:28     17s] WARNING   IMPEXT-2773         10  The via resistance between layers %s and...
+[10/13 11:56:28     17s] *** Message Summary: 20 warning(s), 0 error(s)
+[10/13 11:56:28     17s] 
+[10/13 11:56:28     17s] <CMD> saveDesign setup
+[10/13 11:56:28     17s] #% Begin save design ... (date=10/13 11:56:28, mem=702.8M)
+[10/13 11:56:28     17s] % Begin Save ccopt configuration ... (date=10/13 11:56:28, mem=705.8M)
+[10/13 11:56:28     17s] % End Save ccopt configuration ... (date=10/13 11:56:28, total cpu=0:00:00.0, real=0:00:00.0, peak res=706.6M, current mem=706.6M)
+[10/13 11:56:28     17s] % Begin Save netlist data ... (date=10/13 11:56:28, mem=706.6M)
+[10/13 11:56:28     17s] Writing Binary DB to setup.dat.tmp/vbin/aes.v.bin in multi-threaded mode...
+[10/13 11:56:29     18s] % End Save netlist data ... (date=10/13 11:56:29, total cpu=0:00:00.1, real=0:00:01.0, peak res=712.2M, current mem=707.8M)
+[10/13 11:56:29     18s] Saving symbol-table file in separate thread ...
+[10/13 11:56:29     18s] Saving congestion map file in separate thread ...
+[10/13 11:56:29     18s] Saving congestion map file setup.dat.tmp/aes.route.congmap.gz ...
+[10/13 11:56:29     18s] % Begin Save AAE data ... (date=10/13 11:56:29, mem=709.2M)
+[10/13 11:56:29     18s] Saving AAE Data ...
+[10/13 11:56:29     18s] % End Save AAE data ... (date=10/13 11:56:29, total cpu=0:00:00.0, real=0:00:00.0, peak res=709.2M, current mem=709.2M)
+[10/13 11:56:29     18s] Saving preference file setup.dat.tmp/gui.pref.tcl ...
+[10/13 11:56:29     18s] Saving mode setting ...
+[10/13 11:56:29     18s] Saving global file ...
+[10/13 11:56:29     18s] Saving Drc markers ...
+[10/13 11:56:29     18s] ... No Drc file written since there is no markers found.
+[10/13 11:56:29     18s] Saving special route data file in separate thread ...
+[10/13 11:56:29     18s] Saving PG Conn data in separate thread ...
+[10/13 11:56:29     18s] Saving placement file in separate thread ...
+[10/13 11:56:29     18s] Saving route file in separate thread ...
+[10/13 11:56:29     18s] Saving property file in separate thread ...
+[10/13 11:56:29     18s] ** Saving stdCellPlacement_binary (version# 2) ...
+[10/13 11:56:29     18s] TAT_INFO: ::saveSpecialRoute REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] TAT_INFO: savePGConnFile REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] Saving property file setup.dat.tmp/aes.prop
+[10/13 11:56:29     18s] Save Adaptive View Pruning View Names to Binary file
+[10/13 11:56:29     18s] *** Completed savePlace (cpu=0:00:00.0 real=0:00:00.0 mem=951.5M) ***
+[10/13 11:56:29     18s] TAT_INFO: ::savePlace REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] *** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=951.5M) ***
+[10/13 11:56:29     18s] *** Completed saveRoute (cpu=0:00:00.0 real=0:00:00.0 mem=951.5M) ***
+[10/13 11:56:29     18s] TAT_INFO: ::saveRoute REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] TAT_INFO: ::db::saveAnnotationAndProp REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] TAT_INFO: ::db::saveSymbolTable REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] TAT_INFO: ::saveCongMap REAL = 0 : CPU = 0 : MEM = 0.
+[10/13 11:56:29     18s] % Begin Save power constraints data ... (date=10/13 11:56:29, mem=719.5M)
+[10/13 11:56:29     18s] % End Save power constraints data ... (date=10/13 11:56:29, total cpu=0:00:00.0, real=0:00:00.0, peak res=719.6M, current mem=719.6M)
+[10/13 11:56:32     20s] **INFO (INTERRUPT): The current script will stop before next command.
+[10/13 11:56:32     20s] **INFO (INTERRUPT): One more Ctrl-C to exit Innovus ...
+[10/13 11:56:32     20s] Innovus terminated by user interrupt.
+[10/13 11:56:32     20s] **ERROR: (IMPSYUTIL-109):	'/users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/.anls_ems_185069.cmd' is an invalid file name.
+[10/13 11:56:32     20s] Innovus terminated by internal (ABORT) error/signal...
+[10/13 11:56:32     20s] **ERROR: (IMPSYUTIL-109):	'/users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/.anls_ems_185069.cmd' is an invalid file name.
+*** Stack trace:
+
+[10/13 11:56:32     20s] *** Memory Usage v#1 (Current mem = 935.000M, initial mem = 268.254M) ***
+[10/13 11:56:32     20s] 
+[10/13 11:56:32     20s] *** Summary of all messages that are not suppressed in this session:
+[10/13 11:56:32     20s] Severity  ID               Count  Summary                                  
+[10/13 11:56:32     20s] WARNING   IMPEXT-2766         10  The sheet resistance for layer %s is not...
+[10/13 11:56:32     20s] WARNING   IMPEXT-2773         10  The via resistance between layers %s and...
+[10/13 11:56:32     20s] ERROR     IMPSYUTIL-109        2  '%s' is an invalid file name.            
+[10/13 11:56:32     20s] WARNING   IMPOPT-801           1  Genus executable not found in PATH%s. In...
+[10/13 11:56:32     20s] *** Message Summary: 21 warning(s), 2 error(s)
+[10/13 11:56:32     20s] 
+[10/13 11:56:32     20s] --- Ending "Innovus" (totcpu=0:00:20.7, real=0:00:18.0, mem=935.0M) ---

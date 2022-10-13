@@ -1,0 +1,231 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2020 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v20.10-p004_1, built Thu May 7 20:02:41 PDT 2020
+Options:	-no_gui -execute source apr.tcl 
+Date:		Thu Oct 13 11:56:14 2022
+Host:		ic51 (x86_64 w/Linux 3.10.0-1160.25.1.el7.x86_64) (16cores*64cpus*Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz 22528KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		invs	Innovus Implementation System	20.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+**WARN: (IMPOPT-801):	Genus executable not found in PATH. Install Genus, add the path to the genus executable in the PATH variable and rerun Innovus.
+Change the soft stacksize limit to 0.2%RAM (256 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+Executing cmd 'source apr.tcl' ...
+<CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+<CMD> suppressMessage ENCEXT-2799
+<CMD> win
+Cannot display window in tcl mode
+<CMD> setMultiCpuUsage -localCpu 8 -cpuPerRemoteHost 1 -remoteHost 0 -keepLicense true
+Setting releaseMultiCpuLicenseMode to false.
+<CMD> setDistributeHost -local
+The timeout for a remote job to respond is 3600 seconds.
+Submit command for task runs will be: local
+<CMD> setDesignMode -process 45
+##  Process: 45            (User Set)               
+##     Node: (not set)                           
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Applying the recommended capacitance filtering threshold values for 45nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+	Capacitance filtering mode(-capFilterMode option of the setExtractRCMode) is 'relAndCoup' for all engines.
+	The accuracy mode for postRoute effortLevel low extraction will be set to 'high'.
+	Default value for EffortLevel(-effortLevel option of the setExtractRCMode) in postRoute extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+<CMD> set init_gnd_net VSS
+<CMD> set init_lef_file NangateOpenCellLibrary.lef
+<CMD> set init_design_settop 0
+<CMD> set init_verilog AES_1.v
+<CMD> set init_mmmc_file mmmc.view
+<CMD> set init_pwr_net VDD
+<CMD> init_design
+#% Begin Load MMMC data ... (date=10/13 11:56:27, mem=440.6M)
+#% End Load MMMC data ... (date=10/13 11:56:27, total cpu=0:00:00.0, real=0:00:00.0, peak res=440.8M, current mem=440.8M)
+generic_rc_corner
+
+Loading LEF file NangateOpenCellLibrary.lef ...
+Set DBUPerIGU to M2 pitch 380.
+
+viaInitial starts at Thu Oct 13 11:56:27 2022
+viaInitial ends at Thu Oct 13 11:56:27 2022
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Loading view definition file from mmmc.view
+Starting library reading in 'Multi-threaded flow' (with '8' threads)
+Reading generic_library_set timing library /users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/NangateOpenCellLibrary.lib.
+Read 134 cells in library NangateOpenCellLibrary.
+Library reading multithread flow ended.
+*** End library_loading (cpu=0.09min, real=0.00min, mem=51.0M, fe_cpu=0.28min, fe_real=0.22min, fe_mem=654.1M) ***
+#% Begin Load netlist data ... (date=10/13 11:56:27, mem=459.9M)
+*** Begin netlist parsing (mem=654.1M) ***
+Created 134 new cells from 1 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist 'AES_1.v'
+
+*** Memory Usage v#1 (Current mem = 654.105M, initial mem = 268.254M) ***
+*** End netlist parsing (cpu=0:00:00.1, real=0:00:01.0, mem=654.1M) ***
+#% End Load netlist data ... (date=10/13 11:56:28, total cpu=0:00:00.1, real=0:00:01.0, peak res=469.3M, current mem=469.3M)
+Top level cell is aes.
+Hooked 134 DB cells to tlib cells.
+Starting recursive module instantiation check.
+No recursion found.
+Building hierarchical netlist for Cell aes ...
+*** Netlist is unique.
+** info: there are 135 modules.
+** info: there are 16509 stdCell insts.
+
+*** Memory Usage v#1 (Current mem = 675.520M, initial mem = 268.254M) ***
+Generated pitch 1.68 in metal10 is different from 1.6 defined in technology file in preferred direction.
+Generated pitch 0.84 in metal8 is different from 0.8 defined in technology file in preferred direction.
+Generated pitch 0.84 in metal7 is different from 0.8 defined in technology file in preferred direction.
+Set Default Net Delay as 1000 ps.
+Set Default Net Load as 0.5 pF. 
+Set Default Input Pin Transition as 0.1 ps.
+Extraction setup Started 
+Initializing multi-corner RC extraction with 1 active RC Corners ...
+**WARN: (IMPEXT-2773):	The via resistance between layers M0 and M1 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M1 and M2 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M2 and M3 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M3 and M4 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M4 and M5 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M5 and M6 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M6 and M7 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M7 and M8 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M8 and M9 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2773):	The via resistance between layers M9 and M10 could not be determined from the LEF technology file because the via resistance specification is missing. A default of 4 Ohms will be used as via resistance between these layers.
+Type 'man IMPEXT-2773' for more detail.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M1 is not defined in the cap table. Therefore, the LEF value 0.38 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M2 is not defined in the cap table. Therefore, the LEF value 0.25 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M3 is not defined in the cap table. Therefore, the LEF value 0.25 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M4 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M5 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M6 is not defined in the cap table. Therefore, the LEF value 0.21 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M7 is not defined in the cap table. Therefore, the LEF value 0.075 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M8 is not defined in the cap table. Therefore, the LEF value 0.075 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M9 is not defined in the cap table. Therefore, the LEF value 0.03 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+**WARN: (IMPEXT-2766):	The sheet resistance for layer M10 is not defined in the cap table. Therefore, the LEF value 0.03 will be used instead. To avoid this message, update the relevant cap table to include the sheet resistance for the specified layer and read it back in.
+Summary of Active RC-Corners : 
+ 
+ Analysis View: generic_view
+    RC-Corner Name        : generic_rc_corner
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 25 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from Cap Table]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from Cap Table]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 
+Updating RC grid for preRoute extraction ...
+Initializing multi-corner resistance tables ...
+*Info: initialize multi-corner CTS.
+Reading timing constraints file 'design.sdc' ...
+Current (total cpu=0:00:17.7, real=0:00:14.0, peak res=662.9M, current mem=662.9M)
+aes
+INFO (CTE): Constraints read successfully.
+Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=681.2M, current mem=681.2M)
+Current (total cpu=0:00:17.8, real=0:00:14.0, peak res=681.2M, current mem=681.2M)
+Total number of combinational cells: 99
+Total number of sequential cells: 29
+Total number of tristate cells: 6
+Total number of level shifter cells: 0
+Total number of power gating cells: 0
+Total number of isolation cells: 0
+Total number of power switch cells: 0
+Total number of pulse generator cells: 0
+Total number of always on buffers: 0
+Total number of retention cells: 0
+List of usable buffers: BUF_X1 BUF_X2 BUF_X4 BUF_X8 BUF_X16 BUF_X32 CLKBUF_X1 CLKBUF_X2 CLKBUF_X3
+Total number of usable buffers: 9
+List of unusable buffers:
+Total number of unusable buffers: 0
+List of usable inverters: INV_X1 INV_X2 INV_X4 INV_X8 INV_X16 INV_X32
+Total number of usable inverters: 6
+List of unusable inverters:
+Total number of unusable inverters: 0
+List of identified usable delay cells:
+Total number of identified usable delay cells: 0
+List of identified unusable delay cells:
+Total number of identified unusable delay cells: 0
+No delay cells were detected in the set of buffers. Buffers will be used to fix hold violations.
+
+*** Summary of all messages that are not suppressed in this session:
+Severity  ID               Count  Summary                                  
+WARNING   IMPEXT-2766         10  The sheet resistance for layer %s is not...
+WARNING   IMPEXT-2773         10  The via resistance between layers %s and...
+*** Message Summary: 20 warning(s), 0 error(s)
+
+<CMD> saveDesign setup
+#% Begin save design ... (date=10/13 11:56:28, mem=702.8M)
+% Begin Save ccopt configuration ... (date=10/13 11:56:28, mem=705.8M)
+% End Save ccopt configuration ... (date=10/13 11:56:28, total cpu=0:00:00.0, real=0:00:00.0, peak res=706.6M, current mem=706.6M)
+% Begin Save netlist data ... (date=10/13 11:56:28, mem=706.6M)
+Writing Binary DB to setup.dat.tmp/vbin/aes.v.bin in multi-threaded mode...
+% End Save netlist data ... (date=10/13 11:56:29, total cpu=0:00:00.1, real=0:00:01.0, peak res=712.2M, current mem=707.8M)
+Saving symbol-table file in separate thread ...
+Saving congestion map file in separate thread ...
+Saving congestion map file setup.dat.tmp/aes.route.congmap.gz ...
+% Begin Save AAE data ... (date=10/13 11:56:29, mem=709.2M)
+Saving AAE Data ...
+% End Save AAE data ... (date=10/13 11:56:29, total cpu=0:00:00.0, real=0:00:00.0, peak res=709.2M, current mem=709.2M)
+Saving preference file setup.dat.tmp/gui.pref.tcl ...
+Saving mode setting ...
+Saving global file ...
+Saving Drc markers ...
+... No Drc file written since there is no markers found.
+Saving special route data file in separate thread ...
+Saving PG Conn data in separate thread ...
+Saving placement file in separate thread ...
+Saving route file in separate thread ...
+Saving property file in separate thread ...
+** Saving stdCellPlacement_binary (version# 2) ...
+TAT_INFO: ::saveSpecialRoute REAL = 0 : CPU = 0 : MEM = 0.
+TAT_INFO: savePGConnFile REAL = 0 : CPU = 0 : MEM = 0.
+Saving property file setup.dat.tmp/aes.prop
+Save Adaptive View Pruning View Names to Binary file
+TAT_INFO: ::savePlace REAL = 0 : CPU = 0 : MEM = 0.
+*** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=951.5M) ***
+*** Completed saveRoute (cpu=0:00:00.0 real=0:00:00.0 mem=951.5M) ***
+TAT_INFO: ::saveRoute REAL = 0 : CPU = 0 : MEM = 0.
+TAT_INFO: ::db::saveAnnotationAndProp REAL = 0 : CPU = 0 : MEM = 0.
+TAT_INFO: ::db::saveSymbolTable REAL = 0 : CPU = 0 : MEM = 0.
+TAT_INFO: ::saveCongMap REAL = 0 : CPU = 0 : MEM = 0.
+% Begin Save power constraints data ... (date=10/13 11:56:29, mem=719.5M)
+% End Save power constraints data ... (date=10/13 11:56:29, total cpu=0:00:00.0, real=0:00:00.0, peak res=719.6M, current mem=719.6M)
+generic_rc_corner
+**INFO (INTERRUPT): The current script will stop before next command.
+**INFO (INTERRUPT): One more Ctrl-C to exit Innovus ...
+Innovus terminated by user interrupt.
+**ERROR: (IMPSYUTIL-109):	'/users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/.anls_ems_185069.cmd' is an invalid file name.
+Innovus terminated by internal (ABORT) error/signal...
+**ERROR: (IMPSYUTIL-109):	'/users/student/mr111/hccheng22/private/pda/HW1-P&R-Tool/HW1/.anls_ems_185069.cmd' is an invalid file name.
+*** Stack trace:
+
+*** Memory Usage v#1 (Current mem = 935.000M, initial mem = 268.254M) ***
+*** Message Summary: 21 warning(s), 2 error(s)
+
+--- Ending "Innovus" (totcpu=0:00:20.7, real=0:00:18.0, mem=935.0M) ---

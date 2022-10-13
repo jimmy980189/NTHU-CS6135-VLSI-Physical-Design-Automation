@@ -29,7 +29,7 @@ init_design
 saveDesign setup
 getIoFlowFlag
 setIoFlowFlag 0
-floorPlan -coreMarginsBy die -site FreePDK45_38x28_10R_NP_162NW_34O -r 1.0 0.7 4.0 4.0 4.0 4.0
+floorPlan -coreMarginsBy die -site FreePDK45_38x28_10R_NP_162NW_34O -r 1.0 0.86 4.0 4.0 4.0 4.0
 uiSetTool select
 getIoFlowFlag
 setRouteMode -earlyGlobalHonorMsvRouteConstraint false -earlyGlobalRoutePartitionPinGuide true
@@ -102,7 +102,8 @@ addFiller -cell {FILLCELL_X1 FILLCELL_X2 FILLCELL_X4
 FILLCELL_X8 FILLCELL_X16 FILLCELL_X32} -prefix FILL
 saveDesign final
 report_timing > timing.rpt
-report_area > area.rpt
-report_route -summary > route.rpt
+#report_area > area.rpt
+#report_route -summary > route.rpt
+summaryReport -noHtml -outfile summary.rpt
 verify_drc > drc.rpt
-exit
+#exit

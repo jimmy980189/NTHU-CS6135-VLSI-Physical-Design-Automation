@@ -1,11 +1,11 @@
 #!/bin/sh
 
-rm -rf reports/*
+#rm -rf reports/*
 sdc="design.sdc"
 r="./reports/clk"
 
 # 11 create_clock [get_ports {clk}] -name VCLK -period 10.0 -waveform {0.0 5.0} design.sdc
-for i in $(seq 4 -0.1 3);
+for i in $(seq 3.5 -0.1 3.4);
 do 
     j=`echo "scale=2; $i / 2" | bc`
 
