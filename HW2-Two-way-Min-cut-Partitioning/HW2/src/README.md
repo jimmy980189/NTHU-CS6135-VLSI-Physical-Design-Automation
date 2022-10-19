@@ -19,7 +19,9 @@ $ make clean
 ## How to Run
 
 In this directory, enter the following command:
+
 Usage: ../bin/[exe] [cell file] [net file] [output file]
+
 e.g.
 
 ```sh
@@ -27,7 +29,9 @@ $ ../bin/hw2 ../testcases/p2-1.cells ../testcases/p2-1.nets ../output/p2-1.out
 ```
 
 In "HW2/bin/", enter the following command:
+
 Usage: ../bin/[exe] [cell file] [net file] [output file]
+
 e.g.
 
 ```sh
