@@ -1,2 +1,2 @@
 student id, p2-1 cut size, p2-1 runtime, p2-2 cut size, p2-2 runtime, p2-3 cut size, p2-3 runtime, p2-4 cut size, p2-4 runtime, p2-5 cut size, p2-5 runtime, status
-111062517, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, p2-1 has some errors.  p2-2 has some errors.  p2-3 has some errors.  p2-4 has some errors.  p2-5 has some errors. 
+111062517, 506, 0.00, 5115, 0.06, 50527, 0.78, 135420, 2.07, 270120, 4.32,

@@ -1,6 +1,8 @@
 #include <fstream>
 #include <map>
 #include <unordered_map>
+#include <algorithm>
+#include <math.h>
 #include "fm.h"
 
 void FM::ReadInputFile(const char* cellInputName, const char* netInputName) {
@@ -30,6 +32,12 @@ void FM::ReadInputFile(const char* cellInputName, const char* netInputName) {
             break;
 
         CELL* cell = new CELL(tmpName, tmpSizeA, tmpSizeB);
+
+        if (tmpSizeA > Smax)
+            this->Smax = tmpSizeA;
+        else if (tmpSizeB > Smax)
+            this->Smax = tmpSizeB;
+
         if (cells.insert({tmpName, cell}).second == false)
             cout << tmpName << " ERRRRRRRR during cells insertion" << endl;
         cellMap.insert({tmpName, {tmpSizeA, tmpSizeB}});
@@ -102,19 +110,8 @@ void FM::GenOutputFile(const char* outputName) {
         exit(-1);
     }
     
-    // tmp cut_size
     output << "cut_size " << CalCutSize() << endl;
     
-/*
- *    output << "A " << partitionA.size() << endl;
- *    for (auto i : partitionA) 
- *        output << i << endl;
- *
- *    output << "B " << partitionB.size() << endl;
- *    for (auto i : partitionB) 
- *        output << i << endl;
- */
-
     cout << "AreaA = " << A.GetArea() << endl;
     cout << "AreaB = " << B.GetArea() << endl;
 
@@ -129,20 +126,30 @@ void FM::GenOutputFile(const char* outputName) {
     output.close();
 }
 
-bool FM::IsValid(int areaA, int areaB) {
-    if ((areaA - areaB) < ((areaA + areaB) / 10))
+bool FM::IsBalanced(int areaA, int areaB, int insert) {
+    if ((areaA + insert - areaB) < ((areaA + insert + areaB) / 10.0)) 
         return true;
     else
         return false;
 }
 
+bool cmp(CELL* a, CELL* b) {
+    return a->GetSizeA() > b->GetSizeA();
+}
+
 void FM::Initial() {
-    for (auto cell : cells) {
-        //A.InsertCell(cell.second, true);
-        if (IsValid(A.GetArea(), B.GetArea()))
-            A.InsertCell(cell.second, true);
+    vector<CELL*> tmp;
+    for (auto cell : cells)
+        tmp.push_back(cell.second);
+
+    //sort(tmp.begin(), tmp.end(), cmp);
+
+    for (auto cell : tmp) {
+        //cout << cell.first << endl;
+        if (IsBalanced(A.GetArea(), B.GetArea(), cell->GetSizeA()))
+            A.InsertCell(cell, true);
         else
-            B.InsertCell(cell.second, false);
+            B.InsertCell(cell, false);
     }
 }
 

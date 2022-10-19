@@ -21,8 +21,10 @@ class FM {
          *netArray
          */
 
-        vector<string> partitionA;
-        vector<string> partitionB;
+        // For Balance
+        //int W; // AreaA + AreaB
+        int Smax = 0;
+        double r = 0.5;
 
         PARTITION A;
         PARTITION B;
@@ -58,11 +60,10 @@ class FM {
             return sumN; // either sumN or sumC is ok
         }
 
-
-        bool IsValid(int areaA, int areaB);
+        bool IsBalanced(int areaA, int areaB, int insert); // satisfy constrain & balance
         void Initial();
         int CalCutSize();
-
+        //int CalW() { return A.GetArea() + B.GetArea(); };
 
 };
 
