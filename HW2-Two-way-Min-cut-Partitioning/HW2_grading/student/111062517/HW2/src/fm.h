@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <set>
 #include <unordered_map>
 #include "header.h"
 
@@ -10,26 +11,19 @@ using namespace std;
 
 class FM {
     private:
-        unordered_map<string, pair<int, int>> cellMap;
-        unordered_map<string, vector<string>> netMap;
-
         unordered_map<string, CELL*> cells;
         unordered_map<string, NET*> nets;
 
         /*
-         *cellArray
-         *netArray
+         *int W; // AreaA + AreaB
+         *int Smax = 0;
+         *double r = 0.5;
          */
-
-        // For Balance
-        //int W; // AreaA + AreaB
-        int Smax = 0;
-        double r = 0.5;
 
         PARTITION A;
         PARTITION B;
 
-        vector<NET*> cutSet;
+        set<NET*> cutSet;
 
     public:
         FM() {}
@@ -42,7 +36,7 @@ class FM {
         void ReadInputFile(const char* cellInputName, const char* netInputName);
         void GenOutputFile(const char* outputName);
 
-        int SizeOfCutset() { return cutSet.size(); }
+        int No_Cutset() { return cutSet.size(); }
         int No_Cells() { return cells.size(); }
         int No_Nets() { return nets.size(); }
         int No_Pins() {
@@ -60,11 +54,25 @@ class FM {
             return sumN; // either sumN or sumC is ok
         }
 
-        bool IsBalanced(int areaA, int areaB, int insert); // satisfy constrain & balance
-        void Initial();
-        int CalCutSize();
-        //int CalW() { return A.GetArea() + B.GetArea(); };
+        // satisfy constrain & balance
+        bool IsBalanced(int areaA, int areaB, int insert); 
 
+        void Initial();
+        void CalAllGain();
+        void PrintAllGain();
+        void UpdateGain();
+        void SetCut();
+        int CalCutSize();
+
+        void VerbosePartition();
+        void InitBucket();
+        void PrintBucket();
+
+        int Pass();
+        void MoveCell(CELL* cell);
+        CELL* GetCell(string name) { return cells[name]; }
+
+        void PrintDistribution();
 };
 
 #endif

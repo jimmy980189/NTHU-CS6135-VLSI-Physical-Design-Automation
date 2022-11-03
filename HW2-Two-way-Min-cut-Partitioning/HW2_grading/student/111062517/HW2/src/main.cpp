@@ -14,11 +14,35 @@ int main(int argc, char* argv[]) {
     FM Fm;
     Fm.ReadInputFile(argv[1], argv[2]);
 
+    // Initial
+    Fm.Initial();
+    Fm.SetCut();
+    Fm.CalCutSize();
+
+    Fm.CalAllGain();
+    Fm.InitBucket();
+
+    //Fm.PrintDistribution();
+    //Fm.PrintAllGain();
+    Fm.PrintBucket();
+
+    cout << " ---------- " << endl;
+
+    Fm.Pass();
+    //Fm.MoveCell(Fm.GetCell("c8"));
+    //Fm.PrintAllGain();
+    Fm.PrintBucket();
+
+    //----------output---------//
+    cout << " ---------- " << endl;
+    Fm.VerbosePartition();
+    Fm.SetCut();
+    Fm.CalCutSize();
+
     cout << "Number of cells: " << Fm.No_Cells() << endl;
     cout << "Number of nets: " << Fm.No_Nets() << endl;
     cout << "Number of total pins: " << Fm.No_Pins() << endl;
-
-    Fm.Initial();
+    cout << "Number of nets are cut: " << Fm.No_Cutset() << endl;
 
     Fm.GenOutputFile(argv[3]);
     return 0;

@@ -1,0 +1,7 @@
+NET n1 { a c e }
+NET n2 { b c d }
+NET n3 { c f e }
+NET n4 { g f h }
+NET n5 { d f }
+NET n6 { g e }
+
