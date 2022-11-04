@@ -5,10 +5,16 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <set>
 #include <map>
+#include <unordered_map>
+#include <chrono>
+#include "color.h"
+
+using namespace std;
+using namespace chrono;
 
 enum {PARTITIONA, PARTITIONB};
-using namespace std;
 
 class NET;
 
@@ -22,6 +28,7 @@ class CELL {
         int pins;
         int gain;
         vector<NET*> connectedNets;
+        multimap<int, CELL*, greater<int>>::iterator iter;
 
     public:
         CELL() {}
@@ -61,9 +68,13 @@ class CELL {
         void IncrGain() { ++gain; }
         void DecrGain() { --gain; }
         void CalGain();
-        void UpdateGain();
+        set<CELL*> UpdateGain();
         int CalCutSize();
 
+        multimap<int, CELL*, greater<int>>::iterator GetIter() { return iter; }
+        void SetIter(multimap<int, CELL*, greater<int>>::iterator iter) {
+            this->iter = iter;
+        }
 };
 
 class NET {
@@ -124,12 +135,37 @@ class PARTITION {
         void DeleteCell(CELL* cell);
 
         int No_CellsBucket() { return bucket.size(); }
+        bool CheckBucket() {
+            int autoCnt = 0;
+            for (auto it : bucket) 
+                ++autoCnt; 
+
+            int iterCnt = 0;
+            multimap<int, CELL*, greater<int>>::iterator it = bucket.begin();
+            for (; it != bucket.end(); ++it)
+                ++iterCnt;
+
+            if (autoCnt == bucket.size())
+                return true;
+            else { 
+                cout << "============" << endl;
+                cout << "size: " << bucket.size() << " | ";
+                cout << "iterCnt:" << iterCnt << " | ";
+                cout << "autoCnt: " << autoCnt << " | ";
+                cout << "FAILED" ;
+                cout << "============" << endl;
+                return false;
+            }
+        }
         void OutputBucket(ofstream& output) {
+            cout << bucket.size() << endl;
             output << name << " " << bucket.size() << endl;
             for (auto i : bucket) 
-                output << i.second->GetName() << endl;
+                { output << i.second->GetName() << endl; }
+            CheckBucket();
         }
         
+        multimap<int, CELL*, greater<int>>& GetBucket() { return bucket; }
         void InsertBucket(CELL* cell);
         void DeleteBucket(CELL* cell);
         void ResetBucket() { bucket.clear(); }
@@ -139,6 +175,9 @@ class PARTITION {
 
         void Popbucket();
         CELL* TopBucket();
+        void Remove(multimap<int, CELL*>::iterator it) { 
+            bucket.erase(it); 
+        }
 };
 
 #endif

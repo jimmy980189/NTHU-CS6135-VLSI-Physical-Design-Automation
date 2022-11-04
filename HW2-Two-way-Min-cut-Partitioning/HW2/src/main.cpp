@@ -1,8 +1,6 @@
-#include <iostream>
-#include <fstream>
 #include "fm.h"
 
-using namespace std;
+steady_clock::time_point tStart;
 
 int main(int argc, char* argv[]) {
 
@@ -11,51 +9,50 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
 
+    tStart = steady_clock::now();
+
     FM Fm;
     Fm.ReadInputFile(argv[1], argv[2]);
 
     // Initial
+    cout << " -----[Initial Start]----- " << endl;
     Fm.Initial();
+    cout << " -----[Initial Finished]----- " << endl;
     Fm.SetCut();
-    //cout << "cutsize:" << Fm.CalCutSize() << endl;
 
-    /*
-     *Fm.CalAllGain();
-     *Fm.InitBucket();
-     */
+    pair<int, int> area = Fm.GetArea();
+    cout << "AreaA: " << area.first << " | " << "AreaB: " << area.second << endl;
+
+    Fm.CalAllGain();
+    Fm.InitBucket();
+    Fm.CalCutSize();
+    //Fm.PrintBucket();
 
     //Fm.PrintDistribution();
     //Fm.PrintAllGain();
 
-/*
- *    Fm.PrintBucket();
- *    cout << " -----[Move e]----- " << endl;
- *    Fm.MoveCell(Fm.GetCell("e"));
- *    Fm.PrintBucket();
- *
- *    cout << " -----[Move d]----- " << endl;
- *    Fm.MoveCell(Fm.GetCell("d"));
- *    Fm.PrintBucket();
- */
+    /*
+     *cout << " -----[Move c1]----- " << endl;
+     *Fm.MoveCell(Fm.GetCell("c1"));
+     *Fm.CalCutSize();
+     *Fm.PrintBucket();
+     */
+
+    /*
+     *cout << " -----[Move e]----- " << endl;
+     *Fm.MoveCell(Fm.GetCell("e"));
+     *Fm.PrintBucket();
+     */
 
     cout << " -----[start pass]------ " << endl;
 
     int iteration = 0;
+    //while ((Fm.Pass() > 0) || (steady_clock::now() < tStart + seconds(100))) {
     while (Fm.Pass() > 0) {
         cout << "[ ITERATION " << iteration++ << " ]" << endl;
     }
-/*
- *    vector<int> result;
- *    for (int i = 0; i < 100; ++i)
- *        result.push_back(Fm.Pass());
- *
- *    int cnt = 0;
- *    for (auto i : result)
- *        cout << cnt++ << " " << i << endl;
- */
 
     //Fm.Test();
-    //Fm.MoveCell(Fm.GetCell("c7"));
     //Fm.PrintAllGain();
     //Fm.PrintBucket();
 
@@ -67,7 +64,7 @@ int main(int argc, char* argv[]) {
     cout << endl;
     cout << " -----[Verbose]-----" << endl;
     //Fm.VerbosePartition();
-    Fm.PrintBucket();
+    //Fm.PrintBucket();
     //Fm.SetCut();
     //Fm.CalCutSize();
 
@@ -77,6 +74,18 @@ int main(int argc, char* argv[]) {
     //cout << "Number of nets are cut: " << Fm.No_Cutset() << endl;
     cout << "Number of nets are cut: " << Fm.GetCutSize() << endl;
 
+    // ALL FINISHED START TO GENERATE OUTPUT
+
+    steady_clock::time_point tOutputStart = steady_clock::now();
+
     Fm.GenOutputFile(argv[3]);
+
+    steady_clock::time_point tOutputEnd = steady_clock::now();
+
+
+    cout << endl << " -----[Time]-----" << endl;
+    cout << "Total Time of Output: " << duration_cast<microseconds>(tOutputEnd - tOutputStart).count() / 1000000 << "s" << endl;
+    cout << "Total Time: " << duration_cast<microseconds>(tOutputEnd - tStart).count() / 1000000 << "s" << endl;
+
     return 0;
 }

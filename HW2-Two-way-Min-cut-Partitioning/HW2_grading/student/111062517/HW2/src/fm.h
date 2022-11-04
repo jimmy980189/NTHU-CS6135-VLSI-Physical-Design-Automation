@@ -1,10 +1,5 @@
 #ifndef FM_H
 #define FM_H
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <set>
-#include <unordered_map>
 #include "header.h"
 
 using namespace std;
@@ -24,9 +19,13 @@ class FM {
         PARTITION B;
 
         set<NET*> cutSet;
+        int cutSize;
 
     public:
-        FM() {}
+        FM() {
+            A.SetName("A");
+            B.SetName("B");
+        }
         ~FM() {
             for (auto cell : cells) 
                 delete cell.second;
@@ -36,6 +35,9 @@ class FM {
         void ReadInputFile(const char* cellInputName, const char* netInputName);
         void GenOutputFile(const char* outputName);
 
+        pair<int, int> GetArea() {
+            return { A.GetArea(), B.GetArea() };
+        }
         int No_Cutset() { return cutSet.size(); }
         int No_Cells() { return cells.size(); }
         int No_Nets() { return nets.size(); }
@@ -56,12 +58,15 @@ class FM {
 
         // satisfy constrain & balance
         bool IsBalanced(int areaA, int areaB, int insert); 
+        bool IsBalanced(CELL* cell);
 
         void Initial();
         void CalAllGain();
         void PrintAllGain();
         void UpdateGain();
+
         void SetCut();
+        int GetCutSize() { return cutSize; }
         int CalCutSize();
 
         void VerbosePartition();
@@ -69,10 +74,23 @@ class FM {
         void PrintBucket();
 
         int Pass();
+        int Test();
         void MoveCell(CELL* cell);
         CELL* GetCell(string name) { return cells[name]; }
 
         void PrintDistribution();
+
+        bool IsAllLocked() {
+            for (auto c : cells)
+                if (!c.second->IsLocked())
+                    return false;
+            return true;
+        }
+
+        void UnlockAll() {
+            for (auto c : cells)
+                c.second->Unlock();
+        }
 };
 
 #endif

@@ -1,11 +1,11 @@
-cut_size 3
+cut_size 6
 A 4
-g
-c
-a
-e
-B 4
-f
-h
-b
 d
+g
+a
+c
+B 4
+e
+f
+b
+h

@@ -1,0 +1,55 @@
+../bin/hw2 ../testcases/p2-2.cells ../testcases/p2-2.nets ../output/p2-2.out
+ -----[Initial Start]----- 
+ -----[Initial Finished]----- 
+ -----[start pass]------ 
+current cutsize 5059
+ ------[FIND MAX GAIN POS START]------ 
+ ------[FIND MAX GAIN POS END]------ 
+ ------[RESTORE START]------ 
+ ------[RESTORE END]------ 
+current cutsize 2633
+minus 2426
+[ ITERATION 0 ]
+current cutsize 2633
+ ------[FIND MAX GAIN POS START]------ 
+ ------[FIND MAX GAIN POS END]------ 
+ ------[RESTORE START]------ 
+ ------[RESTORE END]------ 
+current cutsize 2526
+minus 107
+[ ITERATION 1 ]
+current cutsize 2526
+ ------[FIND MAX GAIN POS START]------ 
+ ------[FIND MAX GAIN POS END]------ 
+ ------[RESTORE START]------ 
+ ------[RESTORE END]------ 
+current cutsize 2448
+minus 78
+[ ITERATION 2 ]
+current cutsize 2448
+ ------[FIND MAX GAIN POS START]------ 
+ ------[FIND MAX GAIN POS END]------ 
+ ------[RESTORE START]------ 
+ ------[RESTORE END]------ 
+current cutsize 2447
+minus 1
+[ ITERATION 3 ]
+current cutsize 2447
+ ------[FIND MAX GAIN POS START]------ 
+ ------[FIND MAX GAIN POS END]------ 
+ ------[RESTORE START]------ 
+ ------[RESTORE END]------ 
+current cutsize 2447
+minus 0
+
+ -----[end   pass]------ 
+
+
+ -----[Verbose]-----
+Number of cells: 10000
+Number of nets: 10000
+Number of total pins: 32066
+Number of nets are cut: 2447
+AreaA = 7298524
+AreaB = 5972820
+[Success] Your output file satisfies our basic requirements.

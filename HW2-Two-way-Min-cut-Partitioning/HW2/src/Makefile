@@ -1,16 +1,10 @@
 all:	hw2
 
 hw2:	main.cpp fm.o
-	g++ --std=c++17 -g main.cpp fm.o -o ../bin/hw2
+	g++ --std=c++11 -O3 -g main.cpp fm.o -o ../bin/hw2
 
 fm.o:	fm.h fm.cpp header.h
-	g++ --std=c++17 -c -g fm.cpp
-
-test:	hw2
-	../bin/hw2 ../testcases/easy.cells ../testcases/easy.nets ../output/easy.out
-	../bin/hw2 ../testcases/p2-1.cells ../testcases/p2-1.nets ../output/p2-1.out
-	#../verifier/verify ../testcases/p2-1.cells ../testcases/p2-1.nets ../output/p2-1.out
-
+	g++ --std=c++11 -O3 -c -g fm.cpp
 
 clean:
 	rm ../bin/hw2 *.o

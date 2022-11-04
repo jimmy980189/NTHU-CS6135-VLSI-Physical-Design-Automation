@@ -1,12 +1,6 @@
 #ifndef FM_H
 #define FM_H
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <set>
-#include <unordered_map>
 #include "header.h"
-#include "color.h"
 
 using namespace std;
 
@@ -41,6 +35,9 @@ class FM {
         void ReadInputFile(const char* cellInputName, const char* netInputName);
         void GenOutputFile(const char* outputName);
 
+        pair<int, int> GetArea() {
+            return { A.GetArea(), B.GetArea() };
+        }
         int No_Cutset() { return cutSet.size(); }
         int No_Cells() { return cells.size(); }
         int No_Nets() { return nets.size(); }

@@ -1,2 +1,2 @@
 student id, p2-1 cut size, p2-1 runtime, p2-2 cut size, p2-2 runtime, p2-3 cut size, p2-3 runtime, p2-4 cut size, p2-4 runtime, p2-5 cut size, p2-5 runtime, status
-111062517, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, p2-1 has some errors.  p2-2 has some errors.  p2-3 has some errors.  p2-4 has some errors.  p2-5 has some errors. 
+111062517, 284, 0.00, 2610, 0.13, fail, 14.80, 92612, 77.92, 197781, 298.16, p2-3 has wrong cell number. 

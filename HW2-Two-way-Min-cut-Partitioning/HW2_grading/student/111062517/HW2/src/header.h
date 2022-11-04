@@ -1,13 +1,20 @@
 #ifndef HEADER_H
 #define HEADER_H
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <list>
+#include <set>
 #include <map>
+#include <unordered_map>
+#include <chrono>
+#include "color.h"
+
+using namespace std;
+using namespace chrono;
 
 enum {PARTITIONA, PARTITIONB};
-using namespace std;
 
 class NET;
 
@@ -21,6 +28,7 @@ class CELL {
         int pins;
         int gain;
         vector<NET*> connectedNets;
+        multimap<int, CELL*, greater<int>>::iterator iter;
 
     public:
         CELL() {}
@@ -55,12 +63,18 @@ class CELL {
         void Lock() { locked = true; }
         void Unlock() { locked = false; }
 
+        //void IncrGain() { cout << "increment gain of " << name << endl; ++gain; }
+        //void DecrGain() { cout << "decrement gain of " << name << endl; --gain; }
         void IncrGain() { ++gain; }
         void DecrGain() { --gain; }
         void CalGain();
-        void UpdateGain();
+        set<CELL*> UpdateGain();
         int CalCutSize();
 
+        multimap<int, CELL*, greater<int>>::iterator GetIter() { return iter; }
+        void SetIter(multimap<int, CELL*, greater<int>>::iterator iter) {
+            this->iter = iter;
+        }
 };
 
 class NET {
@@ -96,29 +110,74 @@ class NET {
 class PARTITION {
     private:
         int area = 0; 
+        string name;
         vector<CELL*> cells;
-        map<int, list<CELL*>, greater<int>> bucket;
-        map<CELL*, list<CELL*>::iterator> cellss;
+        /*
+         *map<int, list<CELL*>, greater<int>> bucket;
+         *map<CELL*, list<CELL*>::iterator> cellss;
+         */
+
+        multimap<int, CELL*, greater<int>> bucket;
 
     public:
         PARTITION() {}
         ~PARTITION() {}
         int GetArea() { return area; }
+        string GetName() { return name; }
+        void SetName(string n) { name = n; }
 
-        int No_Cells() { return cells.size(); }
+        void AddArea(int add) { area += add; }
+        void SubArea(int sub) { area -= sub; }
+
         vector<CELL*> GetCells() { return cells; }
-
+        int No_Cells() { return cells.size(); }
         void InsertCell(CELL* cell, bool pos);
         void DeleteCell(CELL* cell);
+
+        int No_CellsBucket() { return bucket.size(); }
+        bool CheckBucket() {
+            int autoCnt = 0;
+            for (auto it : bucket) 
+                ++autoCnt; 
+
+            int iterCnt = 0;
+            multimap<int, CELL*, greater<int>>::iterator it = bucket.begin();
+            for (; it != bucket.end(); ++it)
+                ++iterCnt;
+
+            if (autoCnt == bucket.size())
+                return true;
+            else { 
+                cout << "============" << endl;
+                cout << "size: " << bucket.size() << " | ";
+                cout << "iterCnt:" << iterCnt << " | ";
+                cout << "autoCnt: " << autoCnt << " | ";
+                cout << "FAILED" ;
+                cout << "============" << endl;
+                return false;
+            }
+        }
+        void OutputBucket(ofstream& output) {
+            cout << bucket.size() << endl;
+            output << name << " " << bucket.size() << endl;
+            for (auto i : bucket) 
+                { output << i.second->GetName() << endl; }
+            CheckBucket();
+        }
         
+        multimap<int, CELL*, greater<int>>& GetBucket() { return bucket; }
         void InsertBucket(CELL* cell);
-        void DeleteBucket(CELL* cell, int oldGain);
+        void DeleteBucket(CELL* cell);
         void ResetBucket() { bucket.clear(); }
+        void UpdateBucket();
 
         void PrintBucket();
 
         void Popbucket();
         CELL* TopBucket();
+        void Remove(multimap<int, CELL*>::iterator it) { 
+            bucket.erase(it); 
+        }
 };
 
 #endif
