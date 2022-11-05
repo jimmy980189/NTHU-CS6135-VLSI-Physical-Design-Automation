@@ -107,7 +107,6 @@ class PARTITION {
     private:
         int area = 0; 
         string name;
-        vector<CELL*> cells;
         multimap<int, CELL*, greater<int>> bucket;
         int cnt = 0;
 
@@ -125,40 +124,15 @@ class PARTITION {
         void AddArea(int add) { area += add; }
         void SubArea(int sub) { area -= sub; }
 
-        vector<CELL*> GetCells() { return cells; }
-        int No_Cells() { return cells.size(); }
         void InsertCell(CELL* cell, bool pos);
         void DeleteCell(CELL* cell);
 
         int No_CellsBucket() { return bucket.size(); }
-        bool CheckBucket() {
-            int autoCnt = 0;
-            for (auto it : bucket) 
-                ++autoCnt; 
-
-            int iterCnt = 0;
-            multimap<int, CELL*, greater<int>>::iterator it = bucket.begin();
-            for (; it != bucket.end(); ++it)
-                ++iterCnt;
-
-            if (autoCnt == bucket.size())
-                return true;
-            else { 
-                cout << "============" << endl;
-                cout << "size: " << bucket.size() << " | ";
-                cout << "iterCnt:" << iterCnt << " | ";
-                cout << "autoCnt: " << autoCnt << " | ";
-                cout << "FAILED" << endl;
-                cout << "============" << endl;
-                return false;
-            }
-        }
         void OutputBucket(ofstream& output) {
-            cout << bucket.size() << endl;
             output << name << " " << bucket.size() << endl;
-            for (auto i : bucket) 
-                { output << i.second->GetName() << endl; }
-            CheckBucket();
+            for (auto i : bucket) { 
+                output << i.second->GetName() << endl; 
+            }
         }
         
         multimap<int, CELL*, greater<int>>& GetBucket() { return bucket; }
@@ -169,10 +143,8 @@ class PARTITION {
 
         void PrintBucket();
 
-        void Popbucket();
         CELL* TopBucket();
         void Remove(multimap<int, CELL*>::iterator it) { 
-            //cout << "Remove " << it->second->GetName() << endl; 
             bucket.erase(it); 
             --cnt;
         }

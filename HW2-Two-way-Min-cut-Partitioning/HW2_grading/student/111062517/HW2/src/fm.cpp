@@ -89,24 +89,13 @@ void FM::GenOutputFile(const char* outputName) {
     cout << "AreaA = " << A.GetArea() << endl;
     cout << "AreaB = " << B.GetArea() << endl;
 
-/*
- *    output << "A " << A.No_Cells() << endl;
- *    for (auto i : A.GetCells()) 
- *        output << i->GetName() << endl;
- *
- *    output << "B " << B.No_Cells() << endl;
- *    for (auto i : B.GetCells()) 
- *        output << i->GetName() << endl;
- */
     A.OutputBucket(output);
     B.OutputBucket(output);
 
     output.close();
 }
 
-/*
- *moving cell from A to B
- */
+// MOVE CELL FROM A TO B
 bool FM::IsBalanced(int areaA, int areaB, int insert) {
     if ((areaA + insert - areaB) < ((areaA + insert + areaB) / 10.0)) 
         return true;
@@ -144,60 +133,6 @@ void FM::Initial() {
     //sort(tmp.begin(), tmp.end(), cmp);
 
     for (auto cell : tmp) {
-
-        //A.InsertCell(cell, true);
-        //B.InsertCell(cell, false);
-       
-        // For testing my.cells
-        /*
-         *vector<string> cA = { "a", "c", "d", "g" };
-         *vector<string> cB = { "b", "e", "f", "h" };
-         *if (find(cA.begin(), cA.end(), cell->GetName()) != cA.end())
-         *    A.InsertCell(cell, true);
-         *else
-         *    B.InsertCell(cell, false);
-         */
-
-
-        // For testing easy.cells 
-        /*
-         *if (cell->GetName() == "c1")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c2")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c3")
-         *    B.InsertCell(cell, false);
-         *else if (cell->GetName() == "c4")
-         *    B.InsertCell(cell, false);
-         *else if (cell->GetName() == "c5")
-         *    B.InsertCell(cell, false);
-         *else if (cell->GetName() == "c6")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c7")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c8")
-         *    A.InsertCell(cell, true);
-         */
-
-        /*
-         *if (cell->GetName() == "c1")
-         *    B.InsertCell(cell, false);
-         *else if (cell->GetName() == "c2")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c3")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c4")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c5")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c6")
-         *    B.InsertCell(cell, false);
-         *else if (cell->GetName() == "c7")
-         *    A.InsertCell(cell, true);
-         *else if (cell->GetName() == "c8")
-         *    A.InsertCell(cell, true);
-         */
-
         if (IsBalanced(A.GetArea(), B.GetArea(), cell->GetSize()))
             A.InsertCell(cell, true);
         else
@@ -242,40 +177,12 @@ void FM::CalAllGain() {
         cell.second->CalGain();
 }
 
-void FM::VerbosePartition() {
-    cout << "PartitionA: " << endl;
-    for (auto cell : A.GetCells()) {
-        cout << cell->GetName() << " pos: ";
-        cout << cell->GetPosition() << " gain: ";
-        cout << cell->GetGain() << " locked: ";
-        cout << cell->IsLocked() << endl;
-    }
-    cout << "PartitionB: " << endl;
-    for (auto cell : B.GetCells()) {
-        cout << cell->GetName() << " pos: ";
-        cout << cell->GetPosition() << " gain: ";
-        cout << cell->GetGain() << " locked: ";
-        cout << cell->IsLocked() << endl;
-    }
-}
-
 void FM::InitBucket() {
-    /*
-     *A.ResetBucket();
-     *B.ResetBucket();
-     */
     for (auto cell : cells)
         if (cell.second->GetPosition())
             A.InsertBucket(cell.second);
         else
             B.InsertBucket(cell.second);
-
-    /*
-     *for (auto cell : A.GetCells())
-     *    A.InsertBucket(cell);
-     *for (auto cell : B.GetCells())
-     *    B.InsertBucket(cell);
-     */
 }
 
 void FM::PrintBucket() {
@@ -283,33 +190,6 @@ void FM::PrintBucket() {
     A.PrintBucket();
     cout << "PartitionB" << endl;
     B.PrintBucket();
-}
-
-int FM::Test() {
-    vector<CELL*> seq;
-    int cnt = 0;
-    int max = INT_MIN;
-    int idxMax = 0;
-    int gain = 0;
-
-    for (auto c : cells) {
-        if (IsBalanced(c.second)) {
-            gain += c.second->GetGain();
-            if (gain > max) {
-                max = gain;
-                idxMax = cnt++;
-            }
-            MoveCell(c.second);
-            seq.push_back(c.second);
-            break;
-        }
-    }
-
-    for (auto i : seq)
-        cout << i->GetName() << "->";
-    cout << endl;
-
-    return 0;
 }
 
 int FM::Pass() {
@@ -330,7 +210,7 @@ int FM::Pass() {
     B.ResetBucket();
     CalAllGain();
     InitBucket();
-    //cout << seq.size() << " " << cells.size() << endl;
+
     int cutA = CalCutSize();
     cout << "current cutsize " << cutA << endl;
 
@@ -372,7 +252,7 @@ int FM::Pass() {
             tmp = waitedB;
 
         if (tmp) {
-            if (tmp->GetGain() < 0) break;
+            if (cells.size() > 10000 && tmp->GetGain() < 0) break;
 
             gain += tmp->GetGain();
             if (gain > max) {
@@ -387,11 +267,6 @@ int FM::Pass() {
 
         ++whileCnt;
     } while ((waitedA || waitedB) && (steady_clock::now() < tStart + seconds(LIMIT)));
-    /*
-     *cout << "forCnt: " << forCnt << endl;
-     *cout << "aveforCnt: " << forCnt / whileCnt << endl;
-     */
-
 
 /*
  *    waitedA = A.TopBucket();
@@ -437,12 +312,8 @@ int FM::Pass() {
     UnlockAll();
 
     cout << " ------[RESTORE START]------ " << endl;
-    for (int i = seq.size() - 1; i > idxMax; --i) {
-        //cout << seq[i]->GetName() << "( " << seqGain[i] << "  )" << "->";
-        //cout << KRED << seq[i]->GetName() << "->" << RST;
+    for (int i = seq.size() - 1; i > idxMax; --i)
         this->MoveCell(seq[i]);
-    }
-    //cout << endl;
     cout << " ------[RESTORE END]------ " << endl;
 
     if (DEBUG) {
@@ -463,10 +334,6 @@ int FM::Pass() {
     int cutB = CalCutSize();
     cout << "current cutsize " << cutB << endl;
     cout << "minus " << cutA - cutB << endl;
-    /*
-     *A.ResetBucket();
-     *B.ResetBucket();
-     */
 
     return max;
 }
@@ -475,9 +342,6 @@ void FM::MoveCell(CELL* cell) {
     bool F = cell->GetPosition();
     bool T = !F;
     int oldGain = cell->GetGain();
-
-    if (cell->GetName() == "c78366")
-        cout << "MOVE c78366 from " << F << " to " << T << endl;
 
     if (DEBUG) {
         cout << FCYN("move ") << cell->GetName() <<  FCYN(" from ") << boolalpha << F;
@@ -497,71 +361,16 @@ void FM::MoveCell(CELL* cell) {
         A.InsertCell(cell, true);
     }
 
-    //cout << " -------[UPDATE GAIN START]------- " << endl;
+    // Update cells (gain is different after cell move)
     set<CELL*> updated = cell->UpdateGain();
     for (auto i : updated) {
-        /*
-         *cout << i->GetName();
-         *cout << " from ";
-         *cout << i->GetIter()->first; 
-         *cout << " " ;
-         *cout << i->GetGain();
-         *cout << endl;
-         */
 
         bool F = i->GetPosition();
         PARTITION* FP = F ? &A : &B;
-        if (i->GetIter()->second->GetName() != i->GetName())
-            cout << "ERROR" << endl;
-
-        if (cell->GetName() == "c64800" && i->GetName() == "c78366") {
-            cout << i->GetName() << endl;
-            cout << "LOCATION FP " << F << endl;
-            cout << "LOCATION i " << i->GetPosition() << endl;
-            //FP->PrintBucket();
-            if (!FP->CheckBucket()) {
-                cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
-                cout << "BEFORE: FAILED" << endl;
-                exit(-1);
-            }
-            else
-                cout << "BEFORE: SUCCESS" << endl;
-            cout << "BEFORE SIZE " << FP->GetBucket().size() << endl;
-        }
 
         FP->Remove(i->GetIter());
-        if (i->GetName() == "c78366")
-            cout << "size: " << FP->GetBucket().size() << endl;
         FP->InsertBucket(i);
-
-        if (cell->GetName() == "c64800" && i->GetName() == "c78366") {
-            cout << " --- " << endl;
-            //FP->PrintBucket();
-            if (!FP->CheckBucket()) {
-                cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
-                cout << "AFTER: FAILED" << endl;
-                exit(-1);
-            }
-            else
-                cout << "AFTER: SUCCESS" << endl;
-            cout << "AFTER SIZE " << FP->GetBucket().size() << endl;
-        }
-
-        /*
-         *if (!FP->CheckBucket()) {
-         *    cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
-         *    exit(-1);
-         *}
-         */
     }
-    //cout << " -------[UPDATE GAIN END]------- " << endl;
-
-    /*
-     *cout << " -------[UPDATE BUCKET START]------- " << endl;
-     *A.UpdateBucket();
-     *B.UpdateBucket();
-     *cout << " -------[UPDATE BUCKET END]------- " << endl;
-     */
 }
 
 void FM::PrintDistribution() {
@@ -587,11 +396,6 @@ void CELL::CalGain() {
 
 set<CELL*> CELL::UpdateGain() {
 
-    /*
-     *bool F = this->position;
-     *bool T = !F;
-     *this->position = T;
-     */
     //position has already been updated in MoveCell()
     bool T = this->position;
     bool F = !T;
@@ -602,7 +406,7 @@ set<CELL*> CELL::UpdateGain() {
 
     for (auto net : connectedNets) {
         if (net->GetDistribution(T) == 0) {
-            net->SetCutState(true); //
+            net->SetCutState(true); 
             
             for (auto cell : net->GetCells()) 
                 if (!cell->IsLocked()) { 
@@ -622,7 +426,7 @@ set<CELL*> CELL::UpdateGain() {
         net->IncrDistribution(T);
 
         if (net->GetDistribution(F) == 0) {
-            net->SetCutState(false); //
+            net->SetCutState(false); 
 
             for (auto cell : net->GetCells())
                 if (!cell->IsLocked()) { 
@@ -686,59 +490,29 @@ bool NET::IsCritical() {
 void PARTITION::InsertCell(CELL* cell, bool A) {
     cell->SetPosition(A);
     area += cell->GetSize(); 
-
-    //cells.push_back(cell);
-
-    //cout << KGRN << "INSERT " << cell->GetName() << " to bucket " << name << RST << endl;
     InsertBucket(cell);
 }
 
 void PARTITION::DeleteCell(CELL* cell) {
-    //int tmpGain = cell->GetGain();
-    //area : int
     area -= cell->GetSize();
-    
-    //cells : vector
-    /*
-     *auto f = find(cells.begin(), cells.end(), cell);
-     *if (f != cells.end()) {
-     *    cells.erase(f);
-     *}
-     */
-
-    //bucket
     DeleteBucket(cell);
 }
 
 void PARTITION::InsertBucket(CELL* cell) {
     if (DEBUG)
         cout << "Insert " << cell->GetName() << " to " << name << endl;
+
     ++cnt;
     auto it = bucket.insert({cell->GetGain(), cell});
-    //if (it == bucket.end()) { cout << "FAILED INSERT BUCKET"; }
     cell->SetIter(it);
-    /*
-     *if (cell->GetIter()->second->GetName() != cell->GetName())
-     *    cout << "NAME FAIL" << endl;
-     */
 }
 
 void PARTITION::DeleteBucket(CELL* cell) {
     if (DEBUG) 
         cout << "Delete " << cell->GetName() << " from " << name << endl;
+
     --cnt;
     bucket.erase(cell->GetIter());
-    /*
-     *int oldGain = cell->GetGain();
-     *multimap<int, CELL*>::iterator i;
-     *auto range = bucket.equal_range(oldGain);
-     *for (i = range.first; i != range.second; )
-     *    if (i->second->GetName() == cell->GetName()) {
-     *        i = bucket.erase(i);
-     *    }
-     *    else
-     *        ++i;
-     */
     cell->SetIter(bucket.end());
 }
 
@@ -751,20 +525,17 @@ void PARTITION::PrintBucket() {
     cout << endl;
 }
 
+// SLOW! DON'T USE ANYMORE
 void PARTITION::UpdateBucket() {
     multimap<int, CELL*>::iterator i = bucket.begin();
 
     for (; i != bucket.end(); )
         if (i->first != i->second->GetGain()) {
-            //cout << i->second->GetName() << " key and gain are different " << i->first << " " << i->second->GetGain() << endl;
             bucket.insert({i->second->GetGain(), i->second});
             i = bucket.erase(i);
         }
         else
             ++i;
-}
-
-void PARTITION::Popbucket() {
 }
 
 CELL* PARTITION::TopBucket() {

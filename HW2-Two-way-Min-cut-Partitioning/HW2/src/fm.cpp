@@ -252,7 +252,7 @@ int FM::Pass() {
             tmp = waitedB;
 
         if (tmp) {
-            if (tmp->GetGain() < 0) break;
+            if (cells.size() > 10000 && tmp->GetGain() < 0) break;
 
             gain += tmp->GetGain();
             if (gain > max) {

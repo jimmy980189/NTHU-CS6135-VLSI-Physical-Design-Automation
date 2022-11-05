@@ -30,25 +30,6 @@ int main(int argc, char* argv[]) {
     Fm.CalAllGain();
     //Fm.InitBucket();
     Fm.CalCutSize();
-    //Fm.PrintBucket();
-
-    //Fm.PrintDistribution();
-    //Fm.PrintAllGain();
-
-    /*
-     *cout << " -----[Move c1]----- " << endl;
-     *Fm.MoveCell(Fm.GetCell("c1"));
-     *Fm.CalCutSize();
-     *Fm.PrintBucket();
-     */
-
-    /*
-     *cout << " -----[Move e]----- " << endl;
-     *Fm.PrintBucket();
-     *Fm.MoveCell(Fm.GetCell("e"));
-     *Fm.PrintBucket();
-     */
-
 
     cout << " -----[start pass]------ " << endl;
 
@@ -56,31 +37,21 @@ int main(int argc, char* argv[]) {
     //while ((Fm.Pass() > 0) || (steady_clock::now() < tStart + seconds(100))) {
     while (Fm.Pass() > 0) {
         cout << "[ ITERATION " << iteration++ << " ]" << endl;
-        //break;
     }
 
-    //Fm.Test();
-    //Fm.PrintAllGain();
-    //Fm.PrintBucket();
 
     //----------output---------//
-    cout << endl;
-    cout << " -----[end   pass]------ " << endl;
-    cout << endl;
+    cout << endl << " -----[end   pass]------ " << endl << endl;
 
-    cout << endl;
-    cout << " -----[Verbose]-----" << endl;
-    //Fm.VerbosePartition();
-    //Fm.PrintBucket();
-    //Fm.SetCut();
-    //Fm.CalCutSize();
-    pair<int, int> cnt = Fm.GetCnt();
-    cout << cnt.first << " | " << cnt.second << endl;
+    cout << endl << " -----[Info]-----" << endl;
+    pair<int, int> partitionCnt = Fm.GetCnt();
 
     cout << "Number of cells: " << Fm.No_Cells() << endl;
     cout << "Number of nets: " << Fm.No_Nets() << endl;
     cout << "Number of total pins: " << Fm.No_Pins() << endl;
     cout << "Number of nets are cut: " << Fm.GetCutSize() << endl;
+    cout << "Number of cells in Partition A: " << partitionCnt.first << endl;
+    cout << "Number of cells in Partition B: " << partitionCnt.second << endl;
 
     // ALL FINISHED START TO GENERATE OUTPUT
     steady_clock::time_point tOutputStart = steady_clock::now();

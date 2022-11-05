@@ -9,12 +9,6 @@ class FM {
         unordered_map<string, CELL*> cells;
         unordered_map<string, NET*> nets;
 
-        /*
-         *int W; // AreaA + AreaB
-         *int Smax = 0;
-         *double r = 0.5;
-         */
-
         PARTITION A;
         PARTITION B;
 
