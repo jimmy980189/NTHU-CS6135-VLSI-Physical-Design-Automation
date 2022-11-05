@@ -14,8 +14,6 @@
 using namespace std;
 using namespace chrono;
 
-enum {PARTITIONA, PARTITIONB};
-
 class NET;
 
 class CELL {
@@ -63,8 +61,6 @@ class CELL {
         void Lock() { locked = true; }
         void Unlock() { locked = false; }
 
-        //void IncrGain() { cout << "increment gain of " << name << endl; ++gain; }
-        //void DecrGain() { cout << "decrement gain of " << name << endl; --gain; }
         void IncrGain() { ++gain; }
         void DecrGain() { --gain; }
         void CalGain();
@@ -111,13 +107,8 @@ class PARTITION {
     private:
         int area = 0; 
         string name;
-        vector<CELL*> cells;
-        /*
-         *map<int, list<CELL*>, greater<int>> bucket;
-         *map<CELL*, list<CELL*>::iterator> cellss;
-         */
-
         multimap<int, CELL*, greater<int>> bucket;
+        int cnt = 0;
 
     public:
         PARTITION() {}
@@ -126,57 +117,36 @@ class PARTITION {
         string GetName() { return name; }
         void SetName(string n) { name = n; }
 
+        int GetCnt() { return cnt; }
+        void IncrCnt() { ++cnt; }
+        void DecrCnt() { --cnt; }
+
         void AddArea(int add) { area += add; }
         void SubArea(int sub) { area -= sub; }
 
-        vector<CELL*> GetCells() { return cells; }
-        int No_Cells() { return cells.size(); }
         void InsertCell(CELL* cell, bool pos);
         void DeleteCell(CELL* cell);
 
         int No_CellsBucket() { return bucket.size(); }
-        bool CheckBucket() {
-            int autoCnt = 0;
-            for (auto it : bucket) 
-                ++autoCnt; 
-
-            int iterCnt = 0;
-            multimap<int, CELL*, greater<int>>::iterator it = bucket.begin();
-            for (; it != bucket.end(); ++it)
-                ++iterCnt;
-
-            if (autoCnt == bucket.size())
-                return true;
-            else { 
-                cout << "============" << endl;
-                cout << "size: " << bucket.size() << " | ";
-                cout << "iterCnt:" << iterCnt << " | ";
-                cout << "autoCnt: " << autoCnt << " | ";
-                cout << "FAILED" ;
-                cout << "============" << endl;
-                return false;
-            }
-        }
         void OutputBucket(ofstream& output) {
-            cout << bucket.size() << endl;
             output << name << " " << bucket.size() << endl;
-            for (auto i : bucket) 
-                { output << i.second->GetName() << endl; }
-            CheckBucket();
+            for (auto i : bucket) { 
+                output << i.second->GetName() << endl; 
+            }
         }
         
         multimap<int, CELL*, greater<int>>& GetBucket() { return bucket; }
         void InsertBucket(CELL* cell);
         void DeleteBucket(CELL* cell);
-        void ResetBucket() { bucket.clear(); }
+        void ResetBucket() { bucket.clear(); cnt = 0; }
         void UpdateBucket();
 
         void PrintBucket();
 
-        void Popbucket();
         CELL* TopBucket();
         void Remove(multimap<int, CELL*>::iterator it) { 
             bucket.erase(it); 
+            --cnt;
         }
 };
 

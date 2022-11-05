@@ -9,12 +9,6 @@ class FM {
         unordered_map<string, CELL*> cells;
         unordered_map<string, NET*> nets;
 
-        /*
-         *int W; // AreaA + AreaB
-         *int Smax = 0;
-         *double r = 0.5;
-         */
-
         PARTITION A;
         PARTITION B;
 
@@ -38,6 +32,10 @@ class FM {
         pair<int, int> GetArea() {
             return { A.GetArea(), B.GetArea() };
         }
+        pair<int, int> GetCnt() {
+            return { A.GetCnt(), B.GetCnt() };
+        }
+
         int No_Cutset() { return cutSet.size(); }
         int No_Cells() { return cells.size(); }
         int No_Nets() { return nets.size(); }

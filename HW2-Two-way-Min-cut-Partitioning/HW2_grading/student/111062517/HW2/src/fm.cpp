@@ -12,6 +12,7 @@
 using namespace chrono;
 
 extern steady_clock::time_point tStart;
+extern bool DEBUG;
 
 void FM::ReadInputFile(const char* cellInputName, const char* netInputName) {
 
@@ -83,7 +84,6 @@ void FM::GenOutputFile(const char* outputName) {
         exit(-1);
     }
     
-    //output << "cut_size " << No_Cutset() << endl;
     output << "cut_size " << GetCutSize() << endl;
     
     cout << "AreaA = " << A.GetArea() << endl;
@@ -105,7 +105,6 @@ void FM::GenOutputFile(const char* outputName) {
 }
 
 /*
- *NEED TO BE FIXED
  *moving cell from A to B
  */
 bool FM::IsBalanced(int areaA, int areaB, int insert) {
@@ -446,24 +445,23 @@ int FM::Pass() {
     //cout << endl;
     cout << " ------[RESTORE END]------ " << endl;
 
-    /*
-     *cout << "max: " << max << endl;
-     *cout << "idxMax: " << idxMax << endl;
-     *cout << "seq.size(): " << seq.size() << endl;
-     *for (int i = 0; i < seq.size(); ++i)
-     *    if (i != idxMax)
-     *        if (i < idxMax)
-     *            cout << seq[i]->GetName() << "( " << KGRN << seqGain[i] << RST << " )" << "->";
-     *        else
-     *            cout << KRED << seq[i]->GetName() << "( " << seqGain[i] << " )" << "->" << RST;
-     *    else
-     *        cout << KCYN << seq[i]->GetName() << "( " << seqGain[i] << " )" << RST << "->";
-     *cout << endl;
-     */
+    if (DEBUG) {
+        cout << "max: " << max << endl;
+        cout << "idxMax: " << idxMax << endl;
+        cout << "seq.size(): " << seq.size() << endl;
+        for (int i = 0; i < seq.size(); ++i)
+            if (i != idxMax)
+                if (i < idxMax)
+                    cout << seq[i]->GetName() << "( " << KGRN << seqGain[i] << RST << " )" << "->";
+                else
+                    cout << KRED << seq[i]->GetName() << "( " << seqGain[i] << " )" << "->" << RST;
+            else
+                cout << KCYN << seq[i]->GetName() << "( " << seqGain[i] << " )" << RST << "->";
+        cout << endl;
+    }
 
     int cutB = CalCutSize();
     cout << "current cutsize " << cutB << endl;
-
     cout << "minus " << cutA - cutB << endl;
     /*
      *A.ResetBucket();
@@ -478,10 +476,15 @@ void FM::MoveCell(CELL* cell) {
     bool T = !F;
     int oldGain = cell->GetGain();
 
-    /*
-     *cout << FCYN("move ") << cell->GetName() <<  FCYN(" from ") << boolalpha << F << FCYN(" to ") << boolalpha << T << " ";
-     *cout << FCYN("its gain is ") << cell->GetGain() << ". size(F/T): " << cell->GetSize(F) << " / " << cell->GetSize(T) << endl;;
-     */
+    if (cell->GetName() == "c78366")
+        cout << "MOVE c78366 from " << F << " to " << T << endl;
+
+    if (DEBUG) {
+        cout << FCYN("move ") << cell->GetName() <<  FCYN(" from ") << boolalpha << F;
+        cout << FCYN(" to ") << boolalpha << T << " ";
+        cout << FCYN("its gain is ") << cell->GetGain();
+        cout << ". size(F/T): " << cell->GetSize(F) << " / " << cell->GetSize(T) << endl;
+    }
 
     //cell->SetPosition(T);
 
@@ -510,33 +513,54 @@ void FM::MoveCell(CELL* cell) {
         PARTITION* FP = F ? &A : &B;
         if (i->GetIter()->second->GetName() != i->GetName())
             cout << "ERROR" << endl;
+
+        if (cell->GetName() == "c64800" && i->GetName() == "c78366") {
+            cout << i->GetName() << endl;
+            cout << "LOCATION FP " << F << endl;
+            cout << "LOCATION i " << i->GetPosition() << endl;
+            //FP->PrintBucket();
+            if (!FP->CheckBucket()) {
+                cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
+                cout << "BEFORE: FAILED" << endl;
+                exit(-1);
+            }
+            else
+                cout << "BEFORE: SUCCESS" << endl;
+            cout << "BEFORE SIZE " << FP->GetBucket().size() << endl;
+        }
+
         FP->Remove(i->GetIter());
+        if (i->GetName() == "c78366")
+            cout << "size: " << FP->GetBucket().size() << endl;
         FP->InsertBucket(i);
 
-        /*
-         *if (!FP->CheckBucket())
-         *    cout << "UPDATE BUCKET " << i->GetName() << " ";
-         */
+        if (cell->GetName() == "c64800" && i->GetName() == "c78366") {
+            cout << " --- " << endl;
+            //FP->PrintBucket();
+            if (!FP->CheckBucket()) {
+                cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
+                cout << "AFTER: FAILED" << endl;
+                exit(-1);
+            }
+            else
+                cout << "AFTER: SUCCESS" << endl;
+            cout << "AFTER SIZE " << FP->GetBucket().size() << endl;
+        }
 
+        /*
+         *if (!FP->CheckBucket()) {
+         *    cout << cell->GetName() << " UPDATE BUCKET " << i->GetName() << endl;
+         *    exit(-1);
+         *}
+         */
     }
     //cout << " -------[UPDATE GAIN END]------- " << endl;
 
-    //cout << " -------[UPDATE BUCKET START]------- " << endl;
     /*
+     *cout << " -------[UPDATE BUCKET START]------- " << endl;
      *A.UpdateBucket();
      *B.UpdateBucket();
-     */
-    //cout << " -------[UPDATE BUCKET END]------- " << endl;
-
-    /*
-     *if (F) {
-     *    A.DeleteBucket(cell, oldGain);
-     *    B.InsertBucket(cell);
-     *}
-     *else {
-     *    B.DeleteBucket(cell, oldGain);
-     *    A.InsertBucket(cell);
-     *}
+     *cout << " -------[UPDATE BUCKET END]------- " << endl;
      */
 }
 
@@ -666,7 +690,7 @@ void PARTITION::InsertCell(CELL* cell, bool A) {
     //cells.push_back(cell);
 
     //cout << KGRN << "INSERT " << cell->GetName() << " to bucket " << name << RST << endl;
-    //InsertBucket(cell);
+    InsertBucket(cell);
 }
 
 void PARTITION::DeleteCell(CELL* cell) {
@@ -683,10 +707,13 @@ void PARTITION::DeleteCell(CELL* cell) {
      */
 
     //bucket
-    //DeleteBucket(cell);
+    DeleteBucket(cell);
 }
 
 void PARTITION::InsertBucket(CELL* cell) {
+    if (DEBUG)
+        cout << "Insert " << cell->GetName() << " to " << name << endl;
+    ++cnt;
     auto it = bucket.insert({cell->GetGain(), cell});
     //if (it == bucket.end()) { cout << "FAILED INSERT BUCKET"; }
     cell->SetIter(it);
@@ -697,16 +724,21 @@ void PARTITION::InsertBucket(CELL* cell) {
 }
 
 void PARTITION::DeleteBucket(CELL* cell) {
-    int oldGain = cell->GetGain();
-    multimap<int, CELL*>::iterator i;
-    auto range = bucket.equal_range(oldGain);
-    for (i = range.first; i != range.second; )
-        if (i->second->GetName() == cell->GetName()) {
-            //cout << KRED << "DELETE " << i->second->GetName() << " from bucket " << name << RST << endl;
-            i = bucket.erase(i);
-        }
-        else
-            ++i;
+    if (DEBUG) 
+        cout << "Delete " << cell->GetName() << " from " << name << endl;
+    --cnt;
+    bucket.erase(cell->GetIter());
+    /*
+     *int oldGain = cell->GetGain();
+     *multimap<int, CELL*>::iterator i;
+     *auto range = bucket.equal_range(oldGain);
+     *for (i = range.first; i != range.second; )
+     *    if (i->second->GetName() == cell->GetName()) {
+     *        i = bucket.erase(i);
+     *    }
+     *    else
+     *        ++i;
+     */
     cell->SetIter(bucket.end());
 }
 

@@ -38,6 +38,10 @@ class FM {
         pair<int, int> GetArea() {
             return { A.GetArea(), B.GetArea() };
         }
+        pair<int, int> GetCnt() {
+            return { A.GetCnt(), B.GetCnt() };
+        }
+
         int No_Cutset() { return cutSet.size(); }
         int No_Cells() { return cells.size(); }
         int No_Nets() { return nets.size(); }

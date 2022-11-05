@@ -14,8 +14,6 @@
 using namespace std;
 using namespace chrono;
 
-enum {PARTITIONA, PARTITIONB};
-
 class NET;
 
 class CELL {
@@ -63,8 +61,6 @@ class CELL {
         void Lock() { locked = true; }
         void Unlock() { locked = false; }
 
-        //void IncrGain() { cout << "increment gain of " << name << endl; ++gain; }
-        //void DecrGain() { cout << "decrement gain of " << name << endl; --gain; }
         void IncrGain() { ++gain; }
         void DecrGain() { --gain; }
         void CalGain();
@@ -112,12 +108,8 @@ class PARTITION {
         int area = 0; 
         string name;
         vector<CELL*> cells;
-        /*
-         *map<int, list<CELL*>, greater<int>> bucket;
-         *map<CELL*, list<CELL*>::iterator> cellss;
-         */
-
         multimap<int, CELL*, greater<int>> bucket;
+        int cnt = 0;
 
     public:
         PARTITION() {}
@@ -125,6 +117,10 @@ class PARTITION {
         int GetArea() { return area; }
         string GetName() { return name; }
         void SetName(string n) { name = n; }
+
+        int GetCnt() { return cnt; }
+        void IncrCnt() { ++cnt; }
+        void DecrCnt() { --cnt; }
 
         void AddArea(int add) { area += add; }
         void SubArea(int sub) { area -= sub; }
@@ -152,7 +148,7 @@ class PARTITION {
                 cout << "size: " << bucket.size() << " | ";
                 cout << "iterCnt:" << iterCnt << " | ";
                 cout << "autoCnt: " << autoCnt << " | ";
-                cout << "FAILED" ;
+                cout << "FAILED" << endl;
                 cout << "============" << endl;
                 return false;
             }
@@ -168,7 +164,7 @@ class PARTITION {
         multimap<int, CELL*, greater<int>>& GetBucket() { return bucket; }
         void InsertBucket(CELL* cell);
         void DeleteBucket(CELL* cell);
-        void ResetBucket() { bucket.clear(); }
+        void ResetBucket() { bucket.clear(); cnt = 0; }
         void UpdateBucket();
 
         void PrintBucket();
@@ -176,7 +172,9 @@ class PARTITION {
         void Popbucket();
         CELL* TopBucket();
         void Remove(multimap<int, CELL*>::iterator it) { 
+            //cout << "Remove " << it->second->GetName() << endl; 
             bucket.erase(it); 
+            --cnt;
         }
 };
 
