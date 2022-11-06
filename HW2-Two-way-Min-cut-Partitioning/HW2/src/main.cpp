@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
     cout << " -----[start pass]------ " << endl;
 
     int iteration = 0;
-    //while ((Fm.Pass() > 0) || (steady_clock::now() < tStart + seconds(100))) {
-    while (Fm.Pass() > 0) {
+    while ((Fm.Pass() > 0) && (steady_clock::now() < tStart + seconds(LIMIT))) {
+    //while (Fm.Pass() > 0) {
         cout << "[ ITERATION " << iteration++ << " ]" << endl;
     }
 

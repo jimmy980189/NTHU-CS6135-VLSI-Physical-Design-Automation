@@ -11,6 +11,8 @@
 #include <chrono>
 #include "color.h"
 
+#define LIMIT 270
+
 using namespace std;
 using namespace chrono;
 

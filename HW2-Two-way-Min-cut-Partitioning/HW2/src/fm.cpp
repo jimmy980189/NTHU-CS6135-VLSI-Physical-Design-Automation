@@ -7,8 +7,6 @@
 #include <chrono>
 #include "fm.h"
 
-#define LIMIT 297
-
 using namespace chrono;
 
 extern steady_clock::time_point tStart;
@@ -222,13 +220,11 @@ int FM::Pass() {
     CELL* waitedA = NULL;
     CELL* waitedB = NULL;
 
-    int forCnt = 0;
     do {
         waitedA = NULL;
         waitedB = NULL;
 
         for (auto i : A.GetBucket()) {
-            ++forCnt;
             if (!i.second->IsLocked() && IsBalanced(i.second)) {
                 waitedA = i.second;
                 break;
@@ -236,7 +232,6 @@ int FM::Pass() {
         }
 
         for (auto i : B.GetBucket()) {
-            ++forCnt;
             if (!i.second->IsLocked() && IsBalanced(i.second)) { 
                 waitedB = i.second; 
                 break;
