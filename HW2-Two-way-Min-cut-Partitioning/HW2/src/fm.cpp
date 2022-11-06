@@ -304,9 +304,6 @@ int FM::Pass() {
  *    }
  */
 
-    cout << "CNT: " << cnt << endl;
-    cout << "WHILE COUNT: " << whileCnt << endl;
-
     cout << " ------[FIND MAX GAIN POS END]------ " << endl;
 
     UnlockAll();

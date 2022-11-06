@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     cout << "Number of cells: " << Fm.No_Cells() << endl;
     cout << "Number of nets: " << Fm.No_Nets() << endl;
     cout << "Number of total pins: " << Fm.No_Pins() << endl;
-    cout << "Number of nets are cut: " << Fm.GetCutSize() << endl;
+    cout << "Number of nets are cut: " << Fm.GetCutSize() << endl << endl;
     cout << "Number of cells in Partition A: " << partitionCnt.first << endl;
     cout << "Number of cells in Partition B: " << partitionCnt.second << endl;
 
@@ -59,9 +59,14 @@ int main(int argc, char* argv[]) {
     steady_clock::time_point tOutputEnd = steady_clock::now();
 
     cout << endl << " -----[Time]-----" << endl;
-    cout << "Total Time of Iutput: " << (double) duration_cast<microseconds>(tIutputEnd - tIutputStart).count() / 1000000 << "s" << endl;
-    cout << "Total Time of Output: " << (double) duration_cast<microseconds>(tOutputEnd - tOutputStart).count() / 1000000 << "s" << endl;
-    cout << "Total Time: " << (double) duration_cast<microseconds>(tOutputEnd - tStart).count() / 1000000 << "s" << endl;
+    double inputTime = (double) duration_cast<microseconds>(tIutputEnd - tIutputStart).count() / 1000000;
+    double outputTime = (double) duration_cast<microseconds>(tOutputEnd - tOutputStart).count() / 1000000;
+    double totalTime = (double) duration_cast<microseconds>(tOutputEnd - tStart).count() / 1000000;
+    cout << "Total Time of Iutput: " << inputTime << "s" << endl;
+    cout << "Total Time of Output: " << outputTime << "s" << endl;
+    cout << "Total Time of I/O: " << inputTime + outputTime << "s" << endl;
+    cout << "Total Time of computation: " << totalTime - (inputTime + outputTime) << "s" << endl;
+    cout << "Total Time: " << totalTime << "s" << endl;
 
     return 0;
 }
