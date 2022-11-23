@@ -1,0 +1,2 @@
+student id, n100-0.15 wirelength, n100-0.15 runtime, n200-0.15 wirelength, n200-0.15 runtime, n300-0.15 wirelength, n300-0.15 runtime, n100-0.1 wirelength, n100-0.1 runtime, n200-0.1 wirelength, n200-0.1 runtime, n300-0.1 wirelength, n300-0.1 runtime, status
+111062517, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, fail, 0.00, n100 has some errors. n200 has some errors. n300 has some errors. n100 has some errors. n200 has some errors. n300 has some errors.
