@@ -8,6 +8,7 @@ class FloorPlan{
         int numHardRectilinearBlocks;
         int numTerminals;
         map<string, HardBlock*> hardblocks; 
+        vector<string> hbName;
         map<string, Terminal*> terminals;
         vector<Net*> nets;
 
@@ -15,6 +16,7 @@ class FloorPlan{
         int numNets;
         int numPins;
         
+        int area;
         // width = height 
         int width = 0;
         int totalBlockArea = 0;
@@ -51,17 +53,30 @@ class FloorPlan{
 
             this->partial = vector<int>(width, 0);
             this->width = width;
+            this->area = width * width;
 
             return width; 
         }
 
         int HPWL();
 
-        void Initial();
-        void M1();
-        void M2();
-        void M3();
-        bool IsOverlapping(string i, string j);
+        //B*-tree version
+        void InitialBStartTree();
+
+        void InitialPolish();
+        //int Cost(vector<string>& polishExpression);
+        pair<int, pair<int, int>> Cost(vector<string>& polishExpression);
+        pair<int, pair<int, int>> CostArea(vector<string>& polishExpression);
+        pair<int, int> Polish2FloorPlan(vector<string> polishExpression);
+        pair<int, int> M11(vector<string>& expr);
+        void M1(vector<string>& expr, int idx);
+        void M2(vector<string>& expr, int idx, int n);
+        int M3(vector<string>& expr, int idx);
+        void SA(vector<string>& expr);
+        void SAarea(vector<string>& expr);
+
+        bool CheckBoundary();
+        pair<int, int> InitialSlicingTree(vector<string>& polishExpression);
 };
 
 #endif

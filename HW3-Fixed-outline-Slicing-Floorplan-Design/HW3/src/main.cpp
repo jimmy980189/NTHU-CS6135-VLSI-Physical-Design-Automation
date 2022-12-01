@@ -1,6 +1,7 @@
 #include "floorplan.h"
 
-bool DEBUG = true;
+bool DEBUG = false;
+steady_clock::time_point tStart;
 
 int main(int argc, char* argv[]) {
     if (argc != 6) {
@@ -9,6 +10,7 @@ int main(int argc, char* argv[]) {
         exit(-1);
     }
     
+    tStart = steady_clock::now();
     FloorPlan Fp;
     Fp.ReadInputFile(argv[1], argv[2], argv[3], atof(argv[5]));
 
@@ -17,7 +19,9 @@ int main(int argc, char* argv[]) {
     cout << Fp.GetWhiteSpaceRatio() << endl;
     cout << Fp.GetTotalBlockArea() << endl;
     cout << Fp.GetWidth() << endl;
-    Fp.Initial();
+
+    //Fp.InitialBStartTree();
+    Fp.InitialPolish();
 
     Fp.GenOutputFloorPlan(argv[4]);
     return 0;
