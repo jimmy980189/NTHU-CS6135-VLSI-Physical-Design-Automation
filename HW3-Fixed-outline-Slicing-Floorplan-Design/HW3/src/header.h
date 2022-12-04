@@ -133,8 +133,10 @@ class SlicingTreeNode {
         SlicingTreeNode* lnode = NULL;
         SlicingTreeNode* rnode = NULL;
 
+        pair<int, int> option = { 0, 0 };
         pair<int, int> position = { 0, 0 };
         pair<int, int> base = { -1, -1 };
+        int min = 0;
         int width = 0;
         int height = 0;
 
@@ -170,8 +172,13 @@ class SlicingTreeNode {
         pair<int, int> GetBase() { return base; }
 
         void AddShape(vector<int> shape) { shapes.push_back(shape); }
-        vector<vector<int>> GetShapes() { return shapes; }
+        vector<vector<int>>& GetShapes() { return shapes; }
         vector<int> GetShape(int i) { return shapes[i]; }
+
+        void SetMin(int m) { min = m; }
+        int GetMin() { return min; }
+        void SetOption(pair<int, int> o) { option = o; }
+        pair<int, int> GetOption() { return option; }
 
         void SetBase(pair<int, int> b) { base = b; }
         void SetPosition(pair<int, int> p) { 
@@ -183,6 +190,44 @@ class SlicingTreeNode {
         }
         pair<int, int> GetPosition() { return position; }
 
+        void BackTrack() {
+            if (type != HARDBLOCK) {
+                lnode->SetMin(shapes[min][2]);
+                rnode->SetMin(shapes[min][3]);
+                /*
+                 *cout << "[" << name << "]" << endl;
+                 *cout << lnode->GetName() << " ";
+                 *cout << "l: " << lnode->GetShape(shapes[min][2])[0] << " ";
+                 *cout << lnode->GetShape(shapes[min][2])[1] << endl;
+                 *cout << rnode->GetName() << " ";
+                 *cout << "r: " << rnode->GetShape(shapes[min][3])[0] << " ";
+                 *cout << rnode->GetShape(shapes[min][3])[1] << endl;
+                 *cout << endl;
+                 */
+            }
+            else {
+                /*
+                 *cout << name << " min: " << min << endl;
+                 *cout << node->GetRotated() << " " << node->GetWidth() << " " << node->GetHeight() << endl;
+                 *for (auto i : shapes)
+                 *    cout << i[0] << " " << i[1] << endl;
+                 */
+                if (min)
+                    node->RevRotated();
+                /*
+                 *if (shapes[min][2]) 
+                 *    lnode->GetNode()->RevRotated();
+                 *if (shapes[min][3])
+                 *    rnode->GetNode()->RevRotated();
+                 */
+            }
+
+            if (lnode)
+                lnode->BackTrack();
+            if (rnode)
+                rnode->BackTrack();
+        }
+
 
         void PostOrder() {
             if (lnode)
@@ -191,11 +236,17 @@ class SlicingTreeNode {
             if (rnode)
                 rnode->PostOrder();
 
-            //cout << name << " ";
-            /*
-             *for (auto i : shapes)
-             *    cout << i[0] << " " << i[1] << " " << i[2] << " " << i[3] << endl;
-             */
+            if (type == HORIZONTALCUT)
+                cout << KGRN << "node: " << name << RST << endl;
+            else if (type == VERTICALCUT)
+                cout << KBLU << "node: " << name << RST << endl;
+            else
+                cout << "node: " << name << endl;
+            if(lnode) cout << lnode->GetName() << endl;
+            if(rnode) cout << rnode->GetName() << endl;
+            for (auto i : shapes)
+                cout << i[0] << " " << i[1] << " " << i[0] * i[1] << " " << i[2] << " " << i[3] << endl;
+            cout << endl;
 
             if (type != HARDBLOCK) {
 
@@ -247,10 +298,12 @@ class SlicingTreeNode {
             }
             if (type != HARDBLOCK) {
                 pair<int, int> tmp = base;
-                if (shapes[0][2]) 
-                    lnode->GetNode()->RevRotated();
-                if (shapes[0][3])
-                    rnode->GetNode()->RevRotated();
+                /*
+                 *if (shapes[0][2]) 
+                 *    lnode->GetNode()->RevRotated();
+                 *if (shapes[0][3])
+                 *    rnode->GetNode()->RevRotated();
+                 */
 
                 if (type == VERTICALCUT) {
                     tmp.first += lnode->GetWidth();

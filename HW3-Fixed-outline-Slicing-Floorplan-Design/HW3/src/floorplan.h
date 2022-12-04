@@ -66,7 +66,7 @@ class FloorPlan{
         void InitialPolish();
         //int Cost(vector<string>& polishExpression);
         pair<int, pair<int, int>> Cost(vector<string>& polishExpression);
-        pair<int, pair<int, int>> CostArea(vector<string>& polishExpression);
+        pair<double, pair<int, int>> CostArea(vector<string>& polishExpression);
         pair<int, int> Polish2FloorPlan(vector<string> polishExpression);
         pair<int, int> M11(vector<string>& expr);
         void M1(vector<string>& expr, int idx);

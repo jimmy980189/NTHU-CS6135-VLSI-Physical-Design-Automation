@@ -2,6 +2,7 @@
 
 extern bool DEBUG;
 extern steady_clock::time_point tStart;
+double COEF;
 
 void FloorPlan::ReadInputFile(const char* hardBlocks, const char* nets, const char* pl, const double ratio) {
     ReadInputHardBlocks(hardBlocks);
@@ -322,49 +323,23 @@ void FloorPlan::InitialPolish() {
     if (exceed > 0) 
         polishExpression.push_back("H");
 
-    /*
-     *cnt = 0;
-     *for (auto i : pool) 
-     *    if (cnt++ == 0)
-     *        polishExpression.push_back(i->GetName());
-     *    else {
-     *        polishExpression.push_back(i->GetName());
-     *        polishExpression.push_back("V");
-     *    }
-     *cout << endl;
-     */
-
-
     cout << "initial Polish2FloorPlan" << endl;
-    /*
-     *for (auto i : polishExpression)
-     *    cout << i << " ";
-     *cout << endl;
-     */
 
-    /*
-     *pair<int, int> location = InitialSlicingTree(polishExpression);
-     *cout << location.first << " " << location.second << endl;
-     */
-    //Polish2FloorPlan(polishExpression);
+    pair<int, int> location = InitialSlicingTree(polishExpression);
+    //cout << location.first << " " << location.second << endl;
+    pair<int, int> boundary = Polish2FloorPlan(polishExpression);
+    //cout << "boundary: " << boundary.first << " " << boundary.second << endl;
+    double area_cost = pow(double(max(0, boundary.first - width)) / width * 100, 3) + pow(double(max(0, boundary.second - width)) / width * 100, 3);
+    int wirelength = HPWL();
+    COEF = double(wirelength) / area_cost * 100;
+    cout << "COEF " << COEF << endl;
     //M1(polishExpression, 0);
     //InitialSlicingTree(polishExpression);
     //Polish2FloorPlan(polishExpression);
 
 
     SAarea(polishExpression);
-    //SA(polishExpression);
-
-    /*
-     *cout << "Area: " << Polish2FloorPlan(polishExpression) << endl;
-     *cout << "WL: " << HPWL() << endl;
-     *M1(polishExpression, 0, 1);
-     *cout << "Area: " << Polish2FloorPlan(polishExpression) << endl;
-     *cout << "WL: " << HPWL() << endl;
-     *M2(polishExpression, 33, 2);
-     *cout << "Area: " << Polish2FloorPlan(polishExpression) << endl;
-     *cout << "WL: " << HPWL() << endl;
-     */
+    SA(polishExpression);
 }
 
 void FloorPlan::SA(vector<string>& polishExpression) {
@@ -432,11 +407,13 @@ void FloorPlan::SA(vector<string>& polishExpression) {
             int newCost = tmpCost.first;
             int deltaCost = newCost - oldCost;
             //if ((tmpCost.second.first < width && tmpCost.second.second < width && deltaCost <= 0) || (false)) {
+            double a =  (double) rand() / RAND_MAX;
+            double b = (double) exp((double) -deltaCost / T); 
             if ((deltaCost <= 0) || (false)) {
+            //if ((deltaCost <= 0) || ((double) rand() / RAND_MAX < exp(-1 * deltaCost / T))) {
                 cout << "deltaCost: " << deltaCost << endl;
                 cout << "T: " << T << endl;
                 cout << "-deltaCost / T: " << (double)-deltaCost / T << endl; 
-                cout << "exp: " << (double) exp((double) -deltaCost / T) << endl; 
                 if (newCost > oldCost) {
                     cout << " UPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP HILLLLLLLLLLLLLLLLL" << endl;
                     ++uphill;
@@ -520,90 +497,159 @@ void FloorPlan::SA(vector<string>& polishExpression) {
 
 void FloorPlan::SAarea(vector<string>& polishExpression) {
 
-    int T = INT_MAX;
+    //int T = INT_MAX;
+    double T = 100000;
+    double r = 0.99;
+    int epsilon = 100;
 
     vector<string> best = polishExpression;
     pair<int, pair<int, int>> tmpCost = CostArea(polishExpression);
     int bestCost = tmpCost.first;
     int oldCost = tmpCost.first;
+    double deltaAvg = 0;
 
     // for random selecting operations
     pair<int, int> tmpIdx;
+    int MT = 0;
+    int k = 10;
+    int N = k * numHardRectilinearBlocks;
+    int uphill = 0;
+    int reject = 0;
     int M = 0;
     int n = 0;
     int idx;
     int idx2;
+    int cnt = 0;
+
+    // 31 -> n200 0.1 [439, 441. 193599, 503525]
+    srand(11);
 
     do {
-        M = rand() % 8;
-        //M = rand() % 4;
-        switch (M) {
-            case 0:
-                //M11(polishExpression);
-                idx = rand() % polishExpression.size();
-                M1(polishExpression, idx);
-                break;
-            case 1:
-                idx = rand() % polishExpression.size();
-                n = rand() % polishExpression.size();
-                M2(polishExpression, idx, n);
-                break;
-            case 2:
-                idx = rand() % polishExpression.size();
-                idx = M3(polishExpression, idx);
-                break;
-            case 3:
-                tmpIdx = M11(polishExpression);
-            default:
-                idx = rand() % hbName.size();
-                hardblocks[hbName[idx]]->RevRotated();
-                break;
-        }
-        tmpCost = CostArea(polishExpression);
-        int newCost = tmpCost.first;
-        int deltaCost = newCost - oldCost;
-        if ((deltaCost <= 0) || (false)) {
-        //if ((tmpCost.second.first <= width && tmpCost.second.second <= width && deltaCost <= 0) || (false)) {
-            if (newCost < bestCost) {
-                cout << "newCost: " << newCost << endl;
-                cout << "bestCost: " << bestCost << endl;
-                bestCost = newCost;
-                best = polishExpression;
-            }
-            if (tmpCost.second.first <= width && tmpCost.second.second <= width) {
-                cout << FGRN("LEGALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL") << endl;
-                break;
-            }
-            else
-                cout << FRED("NOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT") << endl;
-        }
-        else {
+        MT = 0;
+        uphill = 0;
+        reject = 0;
+        do {
+            //M = rand() % 20;
+            M = rand() % 20;
             switch (M) {
                 case 0:
+                case 1:
+                case 2:
+                case 3:
+                    //M11(polishExpression);
+                    idx = rand() % polishExpression.size();
                     M1(polishExpression, idx);
                     break;
-                case 1:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                    idx = rand() % polishExpression.size();
+                    n = rand() % polishExpression.size();
                     M2(polishExpression, idx, n);
                     break;
-                case 2:
-                    if (idx != -1) {
-                        cout << polishExpression[idx] << " " << polishExpression[idx + 1];
-                        swap(polishExpression[idx], polishExpression[idx + 1]);
-                    }
+                case 11:
+                case 12:
+                case 13:
+                    idx = rand() % polishExpression.size();
+                    idx = M3(polishExpression, idx);
                     break;
-                case 3:
-                    if (tmpIdx.first != -1) {
-                        cout << "RESTORE M11 " << polishExpression[tmpIdx.first] << " " << polishExpression[tmpIdx.second] << endl;
-                        swap(polishExpression[tmpIdx.first], polishExpression[tmpIdx.second]);
-                    }
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    tmpIdx = M11(polishExpression);
                 default:
+                    idx = rand() % hbName.size();
                     hardblocks[hbName[idx]]->RevRotated();
                     break;
             }
-        }
-        cout << "--------------------------------------------------- " << tmpCost.second.first * tmpCost.second.second << " " << tmpCost.first << endl;
-        cout << "--------------------------------------------------- " << tmpCost.second.first << " " << tmpCost.second.second << endl;
-    } while (true && steady_clock::now() < tStart + seconds(100));
+            ++MT;
+            tmpCost = CostArea(polishExpression);
+            int newCost = tmpCost.first;
+            double deltaCost = newCost - oldCost;
+            cout << "deltaCost: " << deltaCost << endl;
+            cout << "T: " << T << endl;
+            if (deltaCost > 0) {
+            cout << "exp: " << (double) exp((double) -deltaCost / T) << endl; 
+            cout << "rand: " << (double) rand() / RAND_MAX * 2<< endl;
+            }
+            if ((deltaCost <= 0) || (false)) {
+            //if ((deltaCost <= 0) || ((double) rand() / RAND_MAX < exp(-1 * deltaCost / T))) {
+                if (deltaCost > 0) {
+                    ++uphill;
+                }
+                if (newCost < bestCost) {
+                    cout << "newCost: " << newCost << endl;
+                    cout << "bestCost: " << bestCost << endl;
+                    bestCost = newCost;
+                    best = polishExpression;
+                }
+                if (tmpCost.second.first <= width && tmpCost.second.second <= width) {
+                    cout << FGRN("LEGALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL") << endl;
+                    return;
+                }
+                else
+                    cout << FRED("NOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT") << endl;
+            }
+            else {
+                ++reject;
+
+                switch (M) {
+                    //case 0:
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                        M1(polishExpression, idx);
+                        break;
+                    //case 1:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        M2(polishExpression, idx, n);
+                        break;
+                    //case 2:
+                    case 11:
+                    case 12:
+                    case 13:
+                        if (idx != -1) {
+                            cout << polishExpression[idx] << " " << polishExpression[idx + 1];
+                            swap(polishExpression[idx], polishExpression[idx + 1]);
+                        }
+                        break;
+                    //case 3:
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                        if (tmpIdx.first != -1) {
+                            cout << "RESTORE M11 " << polishExpression[tmpIdx.first] << " " << polishExpression[tmpIdx.second] << endl;
+                            swap(polishExpression[tmpIdx.first], polishExpression[tmpIdx.second]);
+                        }
+                    default:
+                        hardblocks[hbName[idx]]->RevRotated();
+                        break;
+                }
+            }
+            cout << "--------------------------------------------------- " << tmpCost.second.first * tmpCost.second.second << " " << tmpCost.first << endl;
+            cout << "--------------------------------------------------- " << tmpCost.second.first << " " << tmpCost.second.second << endl;
+            cout << "\t[while2] uphill: " << uphill << " reject: " << reject << " MT: " << MT << " 2N: " << 2 * N << endl;
+            cout << "          ------------------------------------------ cost " << tmpCost.first << " w/h: ";
+            cout << tmpCost.second.first << " " << tmpCost.second.second << " area: ";
+            cout << tmpCost.second.first * tmpCost.second.second << endl;
+            cout << FBLU( "iteration cnt: " ) << cnt++ << endl;
+        } while ((uphill < N) && (MT < 2 * N));
+        T *= r;
+        cout << "[while1] reject / MT: " << (double) reject/MT << " reject: " << reject << " MT: " << MT << " T: " << T << endl;
+    } while (((double) (reject / MT) < 0.95) && (T > epsilon) && (steady_clock::now() < tStart + seconds(10)));
 
     cout << tmpCost.first << " " << bestCost << endl;
 }
@@ -619,10 +665,12 @@ pair<int, pair<int, int>> FloorPlan::Cost(vector<string>& polishExpression) {
     if (boundary.second - width > 0)
         penalty += (boundary.second - width);
 
+    int wirelength = HPWL();
+    cout << "wirelength:" << wirelength << endl;
     //return  10 * tmpArea + 1 * HPWL() + 1000 * penalty;
     return  {
         //10 * tmpArea + 1 * HPWL() + 100000 * penalty,
-        0.5 * tmpArea + 0.5 * HPWL() + 100000 * penalty,
+        0.7 * tmpArea + 0.3 * wirelength + 100000 * penalty,
         //0.5 * tmpArea + 0.5 * HPWL(),
         //tmpArea + 1000000 * penalty,
         //HPWL(),
@@ -637,7 +685,7 @@ pair<int, pair<int, int>> FloorPlan::Cost(vector<string>& polishExpression) {
     //return  1 * tmpArea + 2 * HPWL() + 1000 * (boundary.first - width) + 1000 * (boundary.second - width);
 }
 
-pair<int, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpression) {
+pair<double, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpression) {
     //pair<int, int> boundary = InitialSlicingTree(polishExpression);
     InitialSlicingTree(polishExpression);
     pair<int, int> boundary = Polish2FloorPlan(polishExpression);
@@ -648,17 +696,37 @@ pair<int, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpression) 
     if (boundary.second - width > 0)
         penalty += (boundary.second - width);
 
-    float alpha = 1;
+    float alpha = 0.7;
     float beta = 0;
     float R_star = (double) boundary.first / boundary.second;
     float R = 0.9;
     float cost = alpha * tmpArea + beta * HPWL() + (1 - alpha - beta) * (R_star - R) * (R_star - R);
+    int wirelength = HPWL();
+
+    double area_penalty = 0;
+    if (boundary.first > width)
+        area_penalty += pow(max(0.0, boundary.first - width * 0.99) / width * 9900, 3);
+    if (boundary.second > width)
+        area_penalty += pow(max(0.0, boundary.second - width * 0.99) / width * 9900, 3);
+
+    int test = 0;
+    if (boundary.first > width && boundary.second > width)
+        test = boundary.first * boundary.second - width * width;
+    else if (boundary.first > width && boundary.second <= width)
+        test = (boundary.first - width) * width;
+    else if (boundary.first <= width && boundary.first > width)
+        test = width * (boundary.second - width);
+
 
     return  {
         //tmpArea,
-        tmpArea + 1000000 * penalty,
+        //wirelength,
+        //0.5 * tmpArea + 0.5 * wirelength,
+        tmpArea + 100000 * penalty,
+        //wirelength + area_penalty,
         //penalty,
         //cost,
+        //10 * test + wirelength,
         boundary
     };
 }
@@ -726,8 +794,6 @@ void FloorPlan::M2(vector<string>& expr, int idx, int n) {
 }
 
 int FloorPlan::M3(vector<string>& expr, int idx) {
-    //return;
-    //if (expr[idx] )
     int numOperand = 0;
     int numOperator = 0;
     int i;
@@ -738,7 +804,6 @@ int FloorPlan::M3(vector<string>& expr, int idx) {
         else
             ++numOperand;
     }
-    cout << numOperator << " " << numOperand << endl;
     for (i = idx; i < expr.size() - 1; ++i) {
         if (expr[i] == "V" || expr[i] == "H")
             ++numOperator;
@@ -746,7 +811,6 @@ int FloorPlan::M3(vector<string>& expr, int idx) {
             ++numOperand;
 
         if ((expr[i] == "V" || expr[i] == "H") && (expr[i + 1] != "V" && expr[i + 1] != "H")) {
-            cout << "M3 " << expr[i] << " " << expr[i + 1] << endl;
             swap(expr[i], expr[i + 1]);
             return i;
         }
@@ -754,7 +818,6 @@ int FloorPlan::M3(vector<string>& expr, int idx) {
             ++numOperator;
             //if (2 * numOperator < i + 1) {
             if (2 * numOperator < i) {
-                cout << "SWAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" << endl;
                 swap(expr[i], expr[i + 1]);
                 return i;
             }
@@ -853,6 +916,10 @@ pair<int, int> FloorPlan::Polish2FloorPlan(vector<string> polishExpression) {
     return widthAndHeight;
 }
 
+bool cmpShape(vector<int> A, vector<int> B) {
+    return A[1] > B[1];
+}
+
 pair<int, int> FloorPlan::InitialSlicingTree(vector<string>& expr) {
     vector<SlicingTreeNode*> s;
     SlicingTreeNode* node;
@@ -866,7 +933,6 @@ pair<int, int> FloorPlan::InitialSlicingTree(vector<string>& expr) {
     cout << "INITIAL SLICING TREE" << endl;
 
     for (auto i : expr) {
-        //cout << i << " ";
         if (i != "V" && i != "H") {
             //operand
             node = new SlicingTreeNode(hardblocks[i], HARDBLOCK);
@@ -905,59 +971,115 @@ pair<int, int> FloorPlan::InitialSlicingTree(vector<string>& expr) {
             node->SetLnode(lnode);
             lnode->SetParent(node);
 
-            vector<vector<int>> lshape = lnode->GetShapes();
-            vector<vector<int>> rshape = rnode->GetShapes();
+            vector<vector<int>>& lshape = lnode->GetShapes();
+            vector<vector<int>>& rshape = rnode->GetShapes();
             pair<int, int> tmpW;
             pair<int, int> minW = { INT_MAX, INT_MAX };
             pair<int, int> child;
             int tmpArea;
             int minArea = INT_MAX;
 
+            sort(lshape.begin(), lshape.end(), cmpShape);
+            sort(rshape.begin(), rshape.end(), cmpShape);
+
             if (type == VERTICALCUT) {
-                for (int i = 0; i < lshape.size(); ++i) {
-                    for (int j = 0; j < rshape.size(); ++j) {
-                        tmpW.first = lshape[i][0] + rshape[j][0];
-                        tmpW.second = max(lshape[i][1], rshape[j][1]);
-                        tmpArea = tmpW.first * tmpW.second;
-                        if (tmpArea < minArea) {
-                            minArea = tmpArea;
-                            minW = tmpW; 
-                            child.first = i;
-                            child.second = j;
-                        }
+                int i = 0, j = 0;
+                while (i < lshape.size() && j < rshape.size()) {
+                    tmpW.first = lshape[i][0] + rshape[j][0];
+                    tmpW.second = max(lshape[i][1], rshape[j][1]);
+                    node->AddShape({ tmpW.first, tmpW.second, i , j });
+                    if (lshape[i][1] > rshape[j][1]) {
+                        ++i;
+                    }
+                    else if (lshape[i][1] < rshape[j][1]) {
+                        ++j;
+                    }
+                    else{
+                        ++i;
+                        ++j;
                     }
                 }
-                node->AddShape({ minW.first, minW.second, child.first, child.second });
+                /*
+                 *for (int i = 0; i < lshape.size(); ++i) {
+                 *    for (int j = 0; j < rshape.size(); ++j) {
+                 *        tmpW.first = lshape[i][0] + rshape[j][0];
+                 *        tmpW.second = max(lshape[i][1], rshape[j][1]);
+                 *        tmpArea = tmpW.first * tmpW.second;
+                 *        if (tmpArea < minArea) {
+                 *            minArea = tmpArea;
+                 *            minW = tmpW; 
+                 *            child.first = i;
+                 *            child.second = j;
+                 *        }
+                 *    }
+                 *}
+                 *node->AddShape({ minW.first, minW.second, child.first, child.second });
+                 */
             }
             else {
-                for (int i = 0; i < lshape.size(); ++i) {
-                    for (int j = 0; j < rshape.size(); ++j) {
-                        tmpW.first = max(lshape[i][0], rshape[j][0]);
-                        tmpW.second = lshape[i][1] + rshape[j][1];
-                        tmpArea = tmpW.first * tmpW.second;
-                        if (tmpArea < minArea) {
-                            minArea = tmpArea;
-                            minW = tmpW; 
-                            child.first = i;
-                            child.second = j;
-                        }
+                int i = lshape.size() - 1, j = rshape.size() - 1;
+                while (i > -1 && j > -1) {
+                    tmpW.first = max(lshape[i][0], rshape[j][0]);
+                    tmpW.second = lshape[i][1] + rshape[j][1];
+                    node->AddShape({ tmpW.first, tmpW.second, i , j });
+                    if (lshape[i][0] > rshape[j][0]) {
+                        --i;
+                    }
+                    else if (lshape[i][0] < rshape[j][0]) {
+                        --j;
+                    }
+                    else{
+                        --i;
+                        --j;
                     }
                 }
-                node->AddShape({ minW.first, minW.second, child.first, child.second });
+                /*
+                 *for (int i = 0; i < lshape.size(); ++i) {
+                 *    for (int j = 0; j < rshape.size(); ++j) {
+                 *        tmpW.first = max(lshape[i][0], rshape[j][0]);
+                 *        tmpW.second = lshape[i][1] + rshape[j][1];
+                 *        tmpArea = tmpW.first * tmpW.second;
+                 *        if (tmpArea < minArea) {
+                 *            minArea = tmpArea;
+                 *            minW = tmpW; 
+                 *            child.first = i;
+                 *            child.second = j;
+                 *        }
+                 *    }
+                 *}
+                 *node->AddShape({ minW.first, minW.second, child.first, child.second });
+                 */
             }
 
             s.push_back(node);
         }
     }
-    //cout << endl;
 
     node = s.back();
     s.pop_back();
     pair<int, int> r = { 0, 0 };
 
-    cout << "PostOrder Traversal" << endl;
-    node->PostOrder();
-    cout << endl;
+    vector<vector<int>> tmpShape = node->GetShapes();
+    pair<int, int> option;
+    int minArea = INT_MAX;
+    int m = 0;
+    for (int i = 0 ; i < tmpShape.size(); ++i) {
+        int area = tmpShape[i][0] * tmpShape[i][1];
+        if (area < minArea) {
+            minArea = area;
+            m = i;
+        }
+    }
+    cout << "area: " << minArea << endl;
+    cout << m << endl;
+    node->SetMin(m);
+    node->BackTrack();
+
+    /*
+     *cout << "PostOrder Traversal" << endl;
+     *node->PostOrder();
+     *cout << endl;
+     */
     /*
      *cout << "SetPosition" << endl;
      *node->SetBase({ 0, 0 });
@@ -977,7 +1099,6 @@ int FloorPlan::HPWL() {
     for (auto i : nets) {
         pair<int, int> lowerLeftCorner = { INT_MAX, INT_MAX };
         pair<int, int> upperRightCorner = { 0, 0 };
-        //cout << i->GetIdx() << endl;
 
         for (auto j : i->GetPins()) {
 
@@ -999,9 +1120,6 @@ int FloorPlan::HPWL() {
         }
 
         int tmpWL = (upperRightCorner.first - lowerLeftCorner.first + upperRightCorner.second - lowerLeftCorner.second);
-        //cout << upperRightCorner.first << " " << upperRightCorner.second << endl;
-        //cout << lowerLeftCorner.first << " " << lowerLeftCorner.second << endl;
-        //cout << "wl: " << tmpWL << endl;
         wirelength += tmpWL;
     }
 
