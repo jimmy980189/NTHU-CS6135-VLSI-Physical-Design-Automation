@@ -75,7 +75,6 @@ class FloorPlan{
         void SA(vector<string>& expr);
         void SAarea(vector<string>& expr);
 
-        bool CheckBoundary();
         pair<int, int> InitialSlicingTree(vector<string>& polishExpression);
 };
 

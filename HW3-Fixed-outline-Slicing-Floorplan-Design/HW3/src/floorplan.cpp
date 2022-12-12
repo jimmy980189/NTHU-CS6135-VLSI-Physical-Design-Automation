@@ -2,7 +2,12 @@
 
 extern bool DEBUG;
 extern steady_clock::time_point tStart;
-double COEF;
+extern steady_clock::time_point tInitialStart;
+extern steady_clock::time_point tInitialEnd;
+extern steady_clock::time_point tSaAreaStart;
+extern steady_clock::time_point tSaAreaEnd;
+extern steady_clock::time_point tSaStart;
+extern steady_clock::time_point tSaEnd;
 
 void FloorPlan::ReadInputFile(const char* hardBlocks, const char* nets, const char* pl, const double ratio) {
     ReadInputHardBlocks(hardBlocks);
@@ -245,27 +250,6 @@ void FloorPlan::InitialBStartTree() {
         i->SetLowerLeftCorner({ x, y });
 
         x += tmp.first;
-
-        //if (cnt++ == 25) break;
-
-        /*
-         *int check = partial[0];
-         *int keep = 0;
-         *int c = 0;
-         *for (int i = 0; i < partial.size(); ++i) {
-         *    if (check == partial[i])
-         *        ++c;
-         *    else {
-         *        cout << "(" << keep << ", " << i << ") " << i - keep << ": " << check << " | ";
-         *        check = partial[i];
-         *        keep = i;
-         *        c = 0;
-         *    }
-         *}
-         *cout << endl;
-         */
-
-        //if (cnt++ == 2) break;
     }
 
     cout << " ---- " << endl;
@@ -291,7 +275,6 @@ void FloorPlan::InitialPolish() {
          *if (w.first < w.second)
          *    i.second->SetRotated(true);
          */
-        //if (w.first == w.second) cout << "SAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << endl;
         pool.push_back(i.second);
     }
 
@@ -328,24 +311,25 @@ void FloorPlan::InitialPolish() {
     pair<int, int> location = InitialSlicingTree(polishExpression);
     //cout << location.first << " " << location.second << endl;
     pair<int, int> boundary = Polish2FloorPlan(polishExpression);
-    //cout << "boundary: " << boundary.first << " " << boundary.second << endl;
-    double area_cost = pow(double(max(0, boundary.first - width)) / width * 100, 3) + pow(double(max(0, boundary.second - width)) / width * 100, 3);
-    int wirelength = HPWL();
-    COEF = double(wirelength) / area_cost * 100;
-    cout << "COEF " << COEF << endl;
+    cout << "initial boundary: " << boundary.first << " " << boundary.second << endl;
+    tInitialEnd = steady_clock::now();
     //M1(polishExpression, 0);
     //InitialSlicingTree(polishExpression);
     //Polish2FloorPlan(polishExpression);
 
-
+    tSaAreaStart = steady_clock::now();
     SAarea(polishExpression);
+    tSaAreaEnd = steady_clock::now();
+
+    tSaStart = steady_clock::now();
     SA(polishExpression);
+    tSaEnd = steady_clock::now();
 }
 
 void FloorPlan::SA(vector<string>& polishExpression) {
 
     int cnt = 0;
-    double r = 0.85;
+    double r = 0.99;
     int epsilon = 100;
     int k = 2;
 
@@ -355,8 +339,6 @@ void FloorPlan::SA(vector<string>& polishExpression) {
     int MT = 0;
     int uphill = 0;
     //int T = 1000;
-    //int T = 10000;
-    //int T = 100000;
     //int T = 1000000;
     int T = INT_MAX;
 
@@ -403,24 +385,21 @@ void FloorPlan::SA(vector<string>& polishExpression) {
             }
             ++MT;
             tmpCost = Cost(polishExpression);
-            //int newCost = Cost(polishExpression).first;
             int newCost = tmpCost.first;
             int deltaCost = newCost - oldCost;
-            //if ((tmpCost.second.first < width && tmpCost.second.second < width && deltaCost <= 0) || (false)) {
             double a =  (double) rand() / RAND_MAX;
             double b = (double) exp((double) -deltaCost / T); 
             if ((deltaCost <= 0) || (false)) {
             //if ((deltaCost <= 0) || ((double) rand() / RAND_MAX < exp(-1 * deltaCost / T))) {
+            //if ((tmpCost.second.first < width && tmpCost.second.second < width && deltaCost <= 0) || (false)) {
                 cout << "deltaCost: " << deltaCost << endl;
                 cout << "T: " << T << endl;
                 cout << "-deltaCost / T: " << (double)-deltaCost / T << endl; 
                 if (newCost > oldCost) {
-                    cout << " UPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP HILLLLLLLLLLLLLLLLL" << endl;
                     ++uphill;
                 }
                 //if (newCost < bestCost) {
-                if (newCost < bestCost && tmpCost.second.first <= width && tmpCost.second.second <= width) {
-                    cout << "BESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSt" << endl;
+                if (newCost < bestCost || tmpCost.second.first <= width && tmpCost.second.second <= width) {
                     cout << "newCost: " << newCost << " ";
                     cout << "bestCost: " << bestCost << " ";
                     cout << "w/h: " << tmpCost.second.first << " " << tmpCost.second.second << endl;
@@ -428,7 +407,6 @@ void FloorPlan::SA(vector<string>& polishExpression) {
                     bestCost = newCost;
                     best = polishExpression;
                 }
-                //if (!CheckBoundary())
                 if (tmpCost.second.first <= width && tmpCost.second.second <= width)
                     cout << FGRN("LEGALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL") << endl;
                 else
@@ -445,8 +423,6 @@ void FloorPlan::SA(vector<string>& polishExpression) {
                         break;
                     case 2:
                         if (idx != -1) {
-                            cout << "RESTORE M3 ";
-                            cout << polishExpression[idx] << " " << polishExpression[idx + 1];
                             swap(polishExpression[idx], polishExpression[idx + 1]);
                         }
                         break;
@@ -471,7 +447,6 @@ void FloorPlan::SA(vector<string>& polishExpression) {
         cout << "[while1] reject / MT: " << (double) reject/MT << " reject: " << reject << " MT: " << MT << " T: " << T << endl;
 
     } while (((double) (reject / MT) < 0.95) && (T > epsilon) && (steady_clock::now() < tStart + seconds(LIMIT)));
-    //} while ((T > epsilon) && (steady_clock::now() < tStart + seconds(LIMIT)));
 
     cout << "--- After SA ---" << endl;
     InitialSlicingTree(polishExpression);
@@ -521,7 +496,6 @@ void FloorPlan::SAarea(vector<string>& polishExpression) {
     int idx2;
     int cnt = 0;
 
-    // 31 -> n200 0.1 [439, 441. 193599, 503525]
     srand(11);
 
     do {
@@ -529,14 +503,12 @@ void FloorPlan::SAarea(vector<string>& polishExpression) {
         uphill = 0;
         reject = 0;
         do {
-            //M = rand() % 20;
             M = rand() % 20;
             switch (M) {
                 case 0:
                 case 1:
                 case 2:
                 case 3:
-                    //M11(polishExpression);
                     idx = rand() % polishExpression.size();
                     M1(polishExpression, idx);
                     break;
@@ -667,22 +639,16 @@ pair<int, pair<int, int>> FloorPlan::Cost(vector<string>& polishExpression) {
 
     int wirelength = HPWL();
     cout << "wirelength:" << wirelength << endl;
-    //return  10 * tmpArea + 1 * HPWL() + 1000 * penalty;
     return  {
         //10 * tmpArea + 1 * HPWL() + 100000 * penalty,
         0.7 * tmpArea + 0.3 * wirelength + 100000 * penalty,
+        //0.6 * tmpArea + 0.4 * wirelength + 100000 * penalty,
         //0.5 * tmpArea + 0.5 * HPWL(),
         //tmpArea + 1000000 * penalty,
         //HPWL(),
         //0.5 * HPWL() + 100000 * penalty,
         boundary
     };
-    //return  10 * tmpArea + 1 * HPWL();
-    //return  2 * tmpArea + 20 * HPWL();
-    //return  1 * tmpArea + 2 * HPWL() + 8 * (tmpArea - area);
-    //return  1 * tmpArea + 2 * HPWL() + 20 * pow((boundary.first - width), 2) + 20 * pow((boundary.second - width), 2);
-    //return  1 * tmpArea + 2 * HPWL() + 100 * (boundary.first - width) + 100 * (boundary.second - width);
-    //return  1 * tmpArea + 2 * HPWL() + 1000 * (boundary.first - width) + 1000 * (boundary.second - width);
 }
 
 pair<double, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpression) {
@@ -703,12 +669,6 @@ pair<double, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpressio
     float cost = alpha * tmpArea + beta * HPWL() + (1 - alpha - beta) * (R_star - R) * (R_star - R);
     int wirelength = HPWL();
 
-    double area_penalty = 0;
-    if (boundary.first > width)
-        area_penalty += pow(max(0.0, boundary.first - width * 0.99) / width * 9900, 3);
-    if (boundary.second > width)
-        area_penalty += pow(max(0.0, boundary.second - width * 0.99) / width * 9900, 3);
-
     int test = 0;
     if (boundary.first > width && boundary.second > width)
         test = boundary.first * boundary.second - width * width;
@@ -723,7 +683,6 @@ pair<double, pair<int, int>> FloorPlan::CostArea(vector<string>& polishExpressio
         //wirelength,
         //0.5 * tmpArea + 0.5 * wirelength,
         tmpArea + 100000 * penalty,
-        //wirelength + area_penalty,
         //penalty,
         //cost,
         //10 * test + wirelength,
@@ -1125,16 +1084,4 @@ int FloorPlan::HPWL() {
 
     this->wirelength = wirelength;
     return wirelength;
-}
-
-bool FloorPlan::CheckBoundary() {
-    pair<int, int> pos;
-    pair<int, int> w;
-    for (auto i : hardblocks) {
-        pos = i.second->GetLowerLeftCorner();
-        w = i.second->GetWidthAndHeight();
-        if (pos.first + w.first > width) return true;
-        if (pos.second + w.second > width) return true;
-    }
-    return false;
 }
