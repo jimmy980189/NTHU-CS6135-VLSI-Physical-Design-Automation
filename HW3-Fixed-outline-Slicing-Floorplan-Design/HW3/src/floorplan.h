@@ -2,12 +2,22 @@
 #define FLOORPLAN_H
 #include "header.h"
 
+struct cmpHB {
+    bool operator() (const string& a, const string& b) const {
+        const char* ptr = a.c_str();
+        const char* qtr = b.c_str();
+        int n1 = atoi(ptr + 2);
+        int n2 = atoi(qtr + 2);
+        return n1 < n2;
+    }
+};
+
 class FloorPlan{
     private:
         double whiteSpaceRatio;
         int numHardRectilinearBlocks;
         int numTerminals;
-        map<string, HardBlock*> hardblocks; 
+        map<string, HardBlock*, cmpHB> hardblocks; 
         vector<string> hbName;
         map<string, Terminal*> terminals;
         vector<Net*> nets;

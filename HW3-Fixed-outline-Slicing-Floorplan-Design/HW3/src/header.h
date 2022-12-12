@@ -13,7 +13,7 @@ using namespace std;
 using namespace chrono;
 
 enum type { hardblock, terminal };
-enum nodeType { HARDBLOCK, VERTICALCUT, HORIZONTALCUT };
+enum nodeType { HARDBLOCK, VERTICALCUT, HORIZONTALCUT, X};
 
 struct cmpPos {
     bool operator() (const pair<int, int>& a, const pair<int, int>& b) const {
@@ -24,6 +24,7 @@ struct cmpPos {
 class HardBlock {
     private:
         string name;
+        int idx;
         vector<pair<int, int>> positions; // four corner
         pair<int, int> widthAndHeight;
         pair<int, int> lowerLeftCorner = { 0, 0 };
@@ -34,13 +35,17 @@ class HardBlock {
         vector<string> contains;
 
     public:
-        HardBlock(string name) : name(name) {}
+        HardBlock(string name) : name(name) {
+            const char* ptr = name.c_str();
+            idx = atoi(ptr + 2);
+        }
         HardBlock(string name, vector<pair<int, int>> positions) {
             this->name = name;
             this->positions = positions;
         }
         ~HardBlock() {}
         type GetType() { return t; }
+        int GetIdx() { return idx; }
 
         string GetName() { return name; }
         vector<pair<int, int>> GetPositions() { return positions; }
@@ -236,17 +241,19 @@ class SlicingTreeNode {
             if (rnode)
                 rnode->PostOrder();
 
-            if (type == HORIZONTALCUT)
-                cout << KGRN << "node: " << name << RST << endl;
-            else if (type == VERTICALCUT)
-                cout << KBLU << "node: " << name << RST << endl;
-            else
-                cout << "node: " << name << endl;
-            if(lnode) cout << lnode->GetName() << endl;
-            if(rnode) cout << rnode->GetName() << endl;
-            for (auto i : shapes)
-                cout << i[0] << " " << i[1] << " " << i[0] * i[1] << " " << i[2] << " " << i[3] << endl;
-            cout << endl;
+            /*
+             *if (type == HORIZONTALCUT)
+             *    cout << KGRN << "node: " << name << RST << endl;
+             *else if (type == VERTICALCUT)
+             *    cout << KBLU << "node: " << name << RST << endl;
+             *else
+             *    cout << "node: " << name << endl;
+             *if(lnode) cout << lnode->GetName() << endl;
+             *if(rnode) cout << rnode->GetName() << endl;
+             *for (auto i : shapes)
+             *    cout << i[0] << " " << i[1] << " " << i[0] * i[1] << " " << i[2] << " " << i[3] << endl;
+             *cout << endl;
+             */
 
             if (type != HARDBLOCK) {
 
