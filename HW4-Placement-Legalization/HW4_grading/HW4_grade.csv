@@ -1,0 +1,2 @@
+student id, adaptec1 maximum disp., adaptec1 total disp., adaptec1 runtime, adaptec3 maximum disp., adaptec3 total disp., adaptec3 runtime, ibm01 maximum disp., ibm01 total disp., ibm01 runtime, ibm07 maximum disp., ibm07 total disp., ibm07 runtime, ibm09 maximum disp., ibm09 total disp., ibm09 runtime, status
+testcase, fail, fail, 0.00, fail, fail, 0.00, fail, fail, 0.00, fail, fail, 0.00, fail, fail, 0.00, adaptec1 has some errors. adaptec3 has some errors. ibm01 has some errors. ibm07 has some errors. ibm09 has some errors.
