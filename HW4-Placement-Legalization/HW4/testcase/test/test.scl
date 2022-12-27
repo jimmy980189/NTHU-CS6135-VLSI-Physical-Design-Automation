@@ -1,0 +1,9 @@
+NumRows : 1
+
+CoreRow Horizontal
+    Coordinate   : 0
+    Height       : 20
+    Sitewidth    : 1
+    NumSites     : 10000000
+    SubrowOrigin : 0
+End

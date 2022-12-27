@@ -1,6 +1,7 @@
 #include "placement.h"
 
 extern bool DEBUG;
+int numPlaceRow = 0;
 
 void Placement::ReadInputFile(const char* filename) {
     cout << filename << endl;
@@ -135,7 +136,6 @@ void Placement::ReadInputPlFile(string filename) {
             cnt = 0;
             token = strtok(buffer, s);
             while (token != NULL) { 
-                //cout << token << " ";
                 switch (cnt) {
                     case 0:
                         name = string(token);
@@ -151,7 +151,6 @@ void Placement::ReadInputPlFile(string filename) {
                 ++cnt;
                 token = strtok(NULL, s);
             } 
-            //cout << endl;
         }
         if (DEBUG) {
             for (auto i : nodes) {
@@ -203,7 +202,8 @@ void Placement::ReadInputSclFile(string filename) {
 
                 if (cnt == 0) {
                     base = { subrowOrigin, coordinate };
-                    rowHeight = height; 
+                    this->rowHeight = height; 
+                    this->siteWidth = siteWidth;
                 }
 
                 Row* row = new Row({ subrowOrigin, coordinate }, height, siteWidth, numSites);
@@ -214,20 +214,6 @@ void Placement::ReadInputSclFile(string filename) {
             ++cnt;
         }
         cout << "Parse .scl file successfully" << endl;
-
-        if (DEBUG) {
-            /*
-             *for (auto i : rows) {
-             *    pair<int, int> tmp = i->GetCoordinate();
-             *    cout << "Coordinate : " << tmp.second << endl;
-             *    cout << "Height : " << i->GetHeight() << endl;
-             *    cout << "Sitewidth : " << i->GetSiteWidth() << endl;
-             *    cout << "NumSites : " << i->GetNumSites() << endl;
-             *    cout << "SubrowOrigin : " << tmp.first << endl;
-             *    cout << endl;
-             *}
-             */
-        }
     }
     f.close();
 }
@@ -268,115 +254,62 @@ void Placement::SplitSubRow() {
         int n = (terminal.second->GetHeight() / rowHeight);
         int numOverlap = 0;
 
-        cout << KCYN << "[" << terminalCnt++ << "] " << RST;
-        cout << terminal.first << " | ";
-        cout << "h: " << terminal.second->GetHeight() << " | ";
-        cout << terminalCoor.second << " - " << base.second << " = ";
-        cout << (terminalCoor.second - base.second) << " | ";
+        if (DEBUG) {
+            cout << KCYN << "[" << terminalCnt++ << "] " << RST;
+            cout << terminal.first << " | ";
+            cout << "h: " << terminal.second->GetHeight() << " | ";
+            cout << terminalCoor.second << " - " << base.second << " = ";
+            cout << (terminalCoor.second - base.second) << " | ";
 
-        cout << KGRN << "startIdx: " << startIdx << ", ";
-        cout << "endIdx: " << startIdx + n - 1 << RST << " | ";
-        cout << "n: " << n << endl;
+            cout << KGRN << "startIdx: " << startIdx << ", ";
+            cout << "endIdx: " << startIdx + n - 1 << RST << " | ";
+            cout << "n: " << n << endl;
+        }
 
         for (int i = startIdx; i < startIdx + n; ++i) {
-
-            cout << "rows size: " << rows[i].size() << endl;
-            int subrowCnt = 0;
-            for (auto iter : rows[i]) {
-
-                //cout << (iter->GetY() - base.second) / rowHeight << endl;
+            for (set<Row*>::iterator iter = rows[i].begin(); iter != rows[i].end();)  {
                 // check if terminal overlap with subrow
-                cout << subrowCnt++ << " | ";
-                cout << terminalCoor.first << " " << iter->GetX() + iter->GetNumSites() * iter->GetSiteWidth() << " | ";
-                if (terminalCoor.first <= iter->GetX() + iter->GetNumSites() * iter->GetSiteWidth() && terminalCoor.first >= iter->GetX()) {
+                if (terminalCoor.first < (*iter)->GetX() + (*iter)->GetNumSites() * (*iter)->GetSiteWidth() && terminalCoor.first >= (*iter)->GetX()) {
 
-                    int numSitesTerminal = terminal.second->GetWidth() / iter->GetSiteWidth();
-                    int numSitesRemain = iter->GetNumSites() - numSitesTerminal;
+                    int numSitesTerminal = terminal.second->GetWidth() / (*iter)->GetSiteWidth();
+                    int numSitesRemain = (*iter)->GetNumSites() - numSitesTerminal;
 
-                    int n1 = (terminalCoor.first - iter->GetX()) / iter->GetSiteWidth();
-                    int n2 = iter->GetNumSites() - n1 - numSitesTerminal;
-                    pair<int, int> p1 = iter->GetCoordinate();
+                    int n1 = (terminalCoor.first - (*iter)->GetX()) / (*iter)->GetSiteWidth();
+                    int n2 = (*iter)->GetNumSites() - n1 - numSitesTerminal;
+                    pair<int, int> p1 = (*iter)->GetCoordinate();
                     pair<int, int> p2 = { terminalCoor.first + terminal.second->GetWidth(), terminalCoor.second };
 
-                    cout << (iter->GetY() - base.second) / rowHeight << " ";
-                    cout << iter->GetNumSites() << " - " << numSitesTerminal << " = " << numSitesRemain << " | " << KGRN << "[check] ";
-                    cout << "n1 = " << n1 << " | " << numSitesTerminal << " | " << "n2 = " << n2 << " | n1 + n2 = " << n1 + n2;
-                    cout << RST << endl;
-
                     if (n1 > 0) {
-                        Row* subrow1 = new Row(p1, iter->GetHeight(), iter->GetSiteWidth(), n1);
+                        Row* subrow1 = new Row(p1, (*iter)->GetHeight(), (*iter)->GetSiteWidth(), n1);
                         rows[i].insert(subrow1);
                         garbage.push_back(subrow1);
                     }
 
                     if (n2 > 0) {
-                        Row* subrow2 = new Row(p2, iter->GetHeight(), iter->GetSiteWidth(), n2);
+                        Row* subrow2 = new Row(p2, (*iter)->GetHeight(), (*iter)->GetSiteWidth(), n2);
                         rows[i].insert(subrow2);
                         garbage.push_back(subrow2);
                     }
 
-                    //iter = rows[i].erase(iter);
-                    rows[i].erase(iter);
-
-                    //++numOverlap;
-                    break;
+                    iter = rows[i].erase(iter);
+                    //break;
                 }
-                else
-                    cout << (iter->GetY() - base.second) / rowHeight << " NO" << endl;
+                else {
+                    ++iter;
+                }
             }
-/*
- *            for (set<Row*>::iterator iter = rows[i].begin(); iter != rows[i].end();)  {
- *
- *                // check if terminal overlap with subrow
- *                if (terminalCoor.first <= (*iter)->GetX() + (*iter)->GetNumSites() * (*iter)->GetSiteWidth() && terminalCoor.first > (*iter)->GetX()) {
- *
- *                    int numSitesTerminal = terminal.second->GetWidth() / (*iter)->GetSiteWidth();
- *                    int numSitesRemain = (*iter)->GetNumSites() - numSitesTerminal;
- *
- *                    int n1 = (terminalCoor.first - (*iter)->GetX()) / (*iter)->GetSiteWidth();
- *                    int n2 = (*iter)->GetNumSites() - n1 - numSitesTerminal;
- *                    pair<int, int> p1 = (*iter)->GetCoordinate();
- *                    pair<int, int> p2 = { terminalCoor.first + terminal.second->GetWidth(), terminalCoor.second };
- *
- *                    cout << ((*iter)->GetY() - base.second) / rowHeight << " ";
- *                    cout << (*iter)->GetNumSites() << " - " << numSitesTerminal << " = " << numSitesRemain << " | " << KGRN << "[check] ";
- *                    cout << "n1 = " << n1 << " | " << numSitesTerminal << " | " << "n2 = " << n2 << " | n1 + n2 = " << n1 + n2;
- *                    cout << RST << endl;
- *
- *                    if (n1 > 0) {
- *                        Row* subrow1 = new Row(p1, (*iter)->GetHeight(), (*iter)->GetSiteWidth(), n1);
- *                        rows[i].insert(subrow1);
- *                        garbage.push_back(subrow1);
- *                    }
- *
- *                    if (n2 > 0) {
- *                        Row* subrow2 = new Row(p2, (*iter)->GetHeight(), (*iter)->GetSiteWidth(), n2);
- *                        rows[i].insert(subrow2);
- *                        garbage.push_back(subrow2);
- *                    }
- *
- *                    iter = rows[i].erase(iter);
- *
- *                    break;
- *                }
- *                else {
- *                    ++iter;
- *                }
- *            }
- */
         }
-        
-        //if (terminalCnt == 2)
-            //break;
     }
 
     int cnt = 0;
-    int max = -1;
-    cout << "SUBROW SIZE" << endl;
-    for (auto &i : rows) {
+    int max = 0;
+    for (auto i : rows) {
+        if (max < i.second.size())
+            max = i.second.size();
+
         cnt += i.second.size();
     }
-    cout << "max # of subrow = " << max << endl;
+    cout << "SplitSubRow(): max # of subrow = " << max << endl;
     cout << "SplitSubRow(): # of rows after split = " << cnt << endl;
 }
 
@@ -385,29 +318,32 @@ bool cmpX(Node*& a, Node*& b) {
     pair<double, double> pA = a->GetCoordinate();
     pair<double, double> pB = b->GetCoordinate();
 
-    return (pA.first != pB.first) ? pA.first > pB.first :
-        pA.second > pB.second;
+    /*
+     *return (pA.first != pB.first) ? pA.first > pB.first :
+     *    pA.second > pB.second;
+     */
 
-    //return (pA.second != pB.second) ? pA.second > pB.second :
-        //pA.first > pB.first;
-
-    //return a->GetCoordinate().first > b->GetCoordinate().first;
+    return a->GetCoordinate().first > b->GetCoordinate().first;
 }
 
 void Placement::Abacus() {
 
     // check terminals
-    cout << "[Abacus]" << endl;
-
-    cout << "Abacus(): Add nodes to pool" << endl;
+    /*
+     *cout << "[Abacus]" << endl;
+     *cout << "Abacus(): Add nodes to pool" << endl;
+     */
 
     int cnt = 0;
     int candidate = 0;
-    int minRow = 0;
-    bool up = true;
+    int up = 0;
+    int down = 0;
     double minDisplacement = 0;
     double oldCost = 0;
     double newCost = 0;
+    Row* minRow = NULL;
+    Row* currentRow = NULL;
+    Node* last = NULL;
     Node* current = NULL;
     vector<Node*> pool;
 
@@ -415,121 +351,354 @@ void Placement::Abacus() {
         if (i.second->GetType() == MOVABLE)
             pool.push_back(i.second);
 
-    cout << "Abacus(): # of nodes (not terminal) = " << pool.size() << endl;
     sort(pool.begin(), pool.end(), cmpX);
 
-    cout << "Abacus(): check nodes in pool" << endl;
-    for (auto i : pool) {
-        pair<double, double> tmp = i->GetCoordinate();
-        cout << i->GetName() << " | ("  << tmp.first << ", " << tmp.second << ") | [adajusted]";
-        cout << " (" << tmp.first - base.first << ", " << tmp.second - base.second << ") | ";
-        cout << "rowHeight: " << rowHeight << " | ";
-        cout << fmod(tmp.second - base.second, rowHeight) << endl;
+    //cout << "Abacus(): # of nodes (not terminal) = " << pool.size() << endl;
+
+    if (DEBUG) {
+        cout << "Abacus(): check nodes in pool" << endl;
+        for (auto i : pool) {
+            pair<double, double> tmp = i->GetCoordinate();
+            cout << i->GetName() << " | ("  << tmp.first << ", " << tmp.second << ") | [adajusted]";
+            cout << " (" << tmp.first - base.first << ", " << tmp.second - base.second << ") | ";
+            cout << "rowHeight: " << rowHeight << " | ";
+            cout << fmod(tmp.second - base.second, rowHeight) << endl;
+        }
+        cout << "Abacus(): check completed" << endl;
     }
-    cout << "Abacus(): check completed" << endl;
 
     current = pool.back();
     
     if (numTerminals > 0) {
         cout << "Abacus(): call SplitSubRow()" << endl;
         SplitSubRow();
-        cout << "Abacus(): Split subrow completed" << endl;
     }
 
-    cout << endl << "[START ABACUS]" << endl;
+    //cout << endl << "[START ABACUS]" << endl;
 
-    oldCost = Cost();
     while (!pool.empty()) {
         //start trying from the closest row
-        candidate = ChooseCandidate(current);
+        //cout << "Start to find a row for " << current->GetName() << endl;
+        candidate = round((current->GetY() - base.second) / rowHeight);
+
+        up = candidate;
+        down = candidate - 1;
         minDisplacement = INT_MAX;
-/*
- *        while (true) {
- *
- *            pair<bool, double> result = PlaceRow(candidate, current);
- *            if (result.first) {
- *                if (current->GetDisplacement() < minDisplacement) {
- *                    minDisplacement = current->GetDisplacement();
- *                    minRow = candidate;
- *                }    
- *            }
- *
- *            if (up)
- *                ++candidate;
- *            else
- *                --candidate;
- *        }
- */
+        minRow = NULL;
 
+        /*
+         *cout << "candidate: " << candidate << endl;
+         *cout << "rows[candidate].size() " << rows[candidate].size() << endl;
+         *cout << "start up " << up << endl;
+         */
+        while (up < (int) rows.size()) {
+            /*
+             *cout << "up: " << up << " | ";
+             *cout << "# of subrows in row = " << rows[up].size() << endl;
+             */
+            for (auto currentRow : rows[up]) {
+                currentRow->Store();
+                current->Store();
+
+                if (abs(currentRow->GetY() - current->GetOriginalY()) > minDisplacement)
+                    break;
+
+                pair<bool, double> result = PlaceRow(currentRow, current);
+                if (result.first) {
+                    //cout << current->GetName() << " Success! Displacement: " << current->GetDisplacement() << endl;
+                    if (current->GetDisplacement() < minDisplacement) {
+                        //cout << "YES MIN" << current->GetName() << endl;
+                        minDisplacement = current->GetDisplacement();
+                        minRow = currentRow;
+                    }    
+                    if (current->GetX() % siteWidth != 0) {
+                        cout << KRED << "ERROR does not align to site: ";
+                        cout << current->GetName() << " " << current->GetX() << " " << current->GetY() << endl;
+                        exit(-1);
+                    }
+                }
+                else 
+                    cout << current->GetName() << " Failed" << endl;
+
+                currentRow->Restore();
+                current->Restore();
+            }
+            ++up;
+        }
+
+        //cout << "start down: " << down << endl;
+        while (down > -1) {
+            /*
+             *cout << "down" << down << " | ";
+             *cout << "# of subrows in row = " << rows[down].size() << endl;
+             */
+            for (auto currentRow : rows[down]) {
+                currentRow->Store();
+                current->Store();
+
+                if (abs(currentRow->GetY() - current->GetOriginalY()) > minDisplacement)
+                    break;
+
+                pair<bool, double> result = PlaceRow(currentRow, current);
+                if (result.first) {
+                    //cout << current->GetName() << " Success! Displacement: " << current->GetDisplacement() << endl;
+                    if (current->GetDisplacement() < minDisplacement) {
+                        //cout << "YES MIN " << current->GetName() << endl;
+                        minDisplacement = current->GetDisplacement();
+                        minRow = currentRow;
+                    }    
+                    if (current->GetX() % siteWidth != 0) {
+                        cout << KRED << "ERROR does not align to site: ";
+                        cout << current->GetName() << " " << current->GetX() << " " << current->GetY() << endl;
+                        exit(-1);
+                    }
+                }
+                else 
+                    cout << current->GetName() << " Failed" << endl;
+
+                currentRow->Restore();
+                current->Restore();
+            }
+            --down;
+        }
+
+        //cout << "PlaceRow(): restore position (" << current->GetX() << ", " << current->GetY() << ")" << endl;
+
+        if (minRow) {
+            //cout << "[Place to minRow] " << current->GetName() << endl;
+            PlaceRow(minRow, current);
+            minRow->AddCell(current);
+            //cout << "Finish Place to minRow: " << current->GetName() << endl;
+            //minRow->Print();
+        }
+        else {
+            cout << "Error: There is no minRow for " << current->GetName() << " " << current->GetWidth() << endl;
+        }
+
+        last = current;
         pool.pop_back();
-        current = pool.back();
+        if (!pool.empty())
+            current = pool.back();
 
-        if (cnt++ == 0)
-            break;
+        //PrintRow();
+        //cout << " --------------------------------------------------------------- " << endl;
     }
     //PrintRow();
 }
 
-// return the closest row idx of the node
-int Placement::ChooseCandidate(Node* node) {
-    pair<double, double> tmp = node->GetCoordinate();
-    int r;
+pair<bool, int> Placement::PlaceRow(Row* row, Node* node) {
+    ++numPlaceRow;
+    /*
+     *cout << "PlaceRow(): " << node->GetName() << endl;
+     *cout << "PlaceRow(): original position (" << node->GetX() << ", " << node->GetY() << ")" << endl;
+     */
+    vector<Node*>& cells = row->GetCells();
+    Node* last = NULL;
+    Node* lastClusterHead = NULL;
+    Node* previousClusterHead = NULL;
+    Node* current = NULL;
+    Node* backup = node;
 
-    r = round((tmp.second - base.second) / rowHeight);
-
-    cout << node->GetName() << " | ";
-    cout << "(" << tmp.first - base.first << ", ";
-    cout << tmp.second - base.second << ") | ";
-    cout << (tmp.second - base.second) / rowHeight << " | ";
-    cout << r << endl;
-
-    return r;
-}
-
-pair<bool, int> Placement::PlaceRow(int idx, Node* node) {
-
-/*
- *    if (rows[idx]->size() > 0) {
- *        Node* last = rows[idx]->GetLast();
- *        cout << "last: " << last->GetName() << " | ";
- *
- *        //if no overlap
- *        if (last->GetX() + last->GetWidth() <= node->GetX()) {
- *            cout << "no overlap" << endl;
- *
- *        }
- *        // if overlap
- *        else {
- *            cout << "overlap" << endl;
- *        }
- *    }
- *    else if (rows[idx]->size() == 0){
- *        node->SetCoordinate({ node->GetCoordinate().first , base.second + rowHeight * idx });
- *        rows[idx]->AddCell(node);
- *    }
- *    else {
- *        cout << "[ERROR] Placement::PlaceRow()" << endl;
- *    }
- */
+    //find closestSite x of the node in this row
+    int closestSite = round((node->GetX() - row->GetX()) / siteWidth);
+    int x = row->GetX() + closestSite * siteWidth;
+     
+    //need to consider 3 types of situation
+    // 1. [ cell ]
+    // 2. cell [ ]
+    // 3. [ ] cell
+    if (x < row->GetX())
+        x = row->GetX();
+    else if (x > row->GetRightX())
+        x = row->GetRightX() - node->GetX();
     
+    /*
+     *cout << "PlaceRow(): closest x position = " << x << endl;
+     *cout << "PlaceRow(): # of cells in the row = " << cells.size() << endl;
+     */
+
+    if (cells.size() == 0) {
+        node->SetCoordinate({ x, row->GetY() });
+        return { true, 0 };
+    }
+
+    for (int i = cells.size() - 1; i > -1; --i) {
+        int move = 0;
+        last = cells[i];
+        /*
+         *cout << "Check: " << last->GetName()  << " with " << node->GetName() << endl;
+         *cout << last->GetName() << " last: " << "x/w " << last->GetX() << " " << last->GetWidth() << " " << last->GetX() + last->GetWidth() << endl;
+         *cout << node->GetName() << " node: " << "x/w " << node->GetX() << " " << node->GetWidth() << " " << node->GetX() + node->GetWidth() << endl;
+         */
+        closestSite = round((node->GetX() - row->GetX()) / siteWidth);
+        x = row->GetX() + closestSite * siteWidth;
+        
+        //node does not overlap with the last node 
+        if (last->GetX() + last->GetWidth() <= x) {
+            //cout << "node does not overlap with the last cell of the row => directly set coordinate" << endl;
+            node->SetCoordinate({ x, row->GetY() });
+           
+            // ??????
+            /*
+             *last->SetRight(node);
+             *node->SetLeft(last);
+             */
+
+            break;
+        }
+        //node overlaps with the last node
+        else {
+            //cluster with previous cell
+            last->SetRight(node);
+            node->SetLeft(last);
+            /*
+             *cout << node->GetName() << " overlaps with " << last->GetName() << endl;
+             *cout << node->GetName() << " " << node->GetX() << " " << node->GetY() << endl;
+             */
+
+            //if previous cell is in a cluster => move current to cluster head
+            //if previous cell is not in a cluster => it will stay at last
+            while (last->GetLeft() != NULL) {
+                ++move;
+                last = last->GetLeft();
+            }
+            //cout << row->GetY() << " clusterHead = " << last->GetName() << endl;
+
+            if (!last->IsClusterHead()) 
+                last->SetIsClusterHead();
+
+            int x1 = last->GetX();
+            int x2 = node->GetX();
+            int e1 = last->GetClusterWeight();
+            int e2 = node->GetClusterWeight();
+            int w1 = last->GetClusterWidth();
+            int w2 = node->GetClusterWidth();
+            //cout << e1 * x1 + e2 * (x2 - w1) << endl;
+            int newX = round((double) (e1 * x1 + e2 * (x2 - w1)) / (double) (e1 + e2));
+
+            /*
+             *cout << "x1 = " << x1 << endl;
+             *cout << "x2 = " << x2 << endl;
+             *cout << "e1 = " << e1 << endl;
+             *cout << "e2 = " << e2 << endl;
+             *cout << "w1 = " << w1 << endl;
+             *cout << "w2 = " << w2 << endl;
+             */
+
+            //cout << "newX for " << last->GetName() << " is " << newX << endl;
+
+            if (newX + w1 + w2 > row->GetRightX())
+                newX = row->GetRightX() - w1 - w2;
+
+            last->SetX(newX);
+            last->SetClusterWeight(e1 + e2);
+            last->SetClusterWidth(w1 + w2);
+        }
+        i -= move;
+        node = last;
+    }
+    
+    //align the first cell of the row
+    //cout << "align the first of the row " << row->GetFront()->GetName() << endl;
+    closestSite = round((row->GetFront()->GetX() - row->GetX()) / siteWidth);
+    x = row->GetX() + closestSite * row->GetSiteWidth();
+    if (x < row->GetX()) {
+        x = row->GetX();
+    }
+    //cout << "x = " << x << endl;
+    row->GetFront()->SetX(x);
+    
+    row->AlignCluster();
+
+    node = backup;
+    /*
+     *cout << "check last node: " << row->GetLast()->GetName() << " " << row->GetLast()->GetX() << endl;
+     *cout << "check node: " << node->GetName() << " " << node->GetX() << endl;
+     *cout << "check right: " << node->GetX() + node->GetWidth() << endl;
+     */
+
+    /*
+     *if (node->GetX() + node->GetWidth() > row->GetX() + row->GetSiteWidth() * row->GetNumSites()) {
+     *    cout << "PlaceRow(): Exceed right boundary " << node->GetName() << endl;
+     *    return { false, 0 };
+     *}
+     */
+    if (row->GetFront()->GetX() + row->GetFront()->GetClusterWidth() > row->GetRightX()) {
+        cout << "PlaceRow(): Exceed right boundary " << node->GetName() << endl;
+        return { false, 0 };
+    }
+
     return { true, 0 };
 }
 
 void Placement::PrintRow() {
-    cout << endl << "[PrintRow]" << endl;
-    /*
-     *for (int i = 0; i < rows.size(); ++i)
-     *    if (rows[i]->size() > 0) {
-     *        cout << "siteWidth: " << rows[i]->GetSiteWidth() << " | ";
-     *        vector<Node*>& cells = rows[i]->GetCells();
-     *        cout << i << " | ";
-     *        for (auto cell : cells) {
-     *            cout << "[";
-     *            cout << cell->GetName() << ", ";
-     *            cout << cell->GetX() << ", ";
-     *            cout << cell->GetX() - base.first << "] ";
-     *        }
-     *        cout << endl;
-     *    }
-     */
+    cout << endl << KGRN << "[PrintRow]" << RST << endl;
+    for (auto row : rows) {
+        for (auto subrow : row.second) {
+            cout << KCYN << "[" << subrow->GetX() << ", " << subrow->GetY() << "] " << RST;
+            for (auto cell : subrow->GetCells()) {
+                cout << cell->GetName() << ", (" << cell->GetX() << ", " << cell->GetY() << ") ";
+            }
+            cout << "| " << endl;
+        }
+    }
+}
+
+void Placement::Test() {
+    
+    vector<Node*> pool;
+    for (auto i : nodes) 
+        if (i.second->GetType() == MOVABLE)
+            pool.push_back(i.second);
+
+    sort(pool.begin(), pool.end(), cmpX);
+
+    Row* row = (*rows[0].begin());
+
+    Node* node = pool.back();
+    while(!pool.empty()) {
+        PlaceRow(row, node);
+        row->AddCell(node);
+        PrintRow();
+
+        pool.pop_back();
+        node = pool.back();
+    }
+
+}
+
+void Placement::Check() {
+    int numCells = 0;
+    int cnt = 0;
+    Node* last = NULL;
+    for (auto row : rows) {
+        for (auto subrow : row.second) {
+            vector<Node*> cells = subrow->GetCells();
+            numCells += cells.size();
+            //cout << cnt++ << " whiteSpace = " << subrow->GetWhiteSpace() << endl;
+            for (int i = 0; i < cells.size(); ++i) {
+                if (cells[i]->GetX() < subrow->GetX()) {
+                    cout << "ERROR: " << cells[i]->GetName() << " exceeds left boundary (";
+                    cout << cells[i]->GetX() << ", " << cells[i]->GetY() << ")" << endl;
+                    exit(-1);
+                }
+                if (cells[i]->GetX() + cells[i]->GetWidth() > subrow->GetX() + subrow->GetNumSites() * subrow->GetSiteWidth()) {
+                    cout << "ERROR: " << cells[i]->GetName() << " exceeds right boundary (";
+                    cout << cells[i]->GetX() << ", " << cells[i]->GetY() << ")" << endl;
+                    cout << "right = " << cells[i]->GetX() + cells[i]->GetWidth() << endl;
+                    cout << "right boundary = " << subrow->GetX() + subrow->GetNumSites() * subrow->GetSiteWidth() << endl;
+                    exit(-1);
+                }
+                if ((cells[i]->GetX() - subrow->GetX()) % subrow->GetSiteWidth() != 0) {
+                    cout << "ERROR: " << cells[i]->GetName() << " does not align with any site";
+                    cout << cells[i]->GetX() << ", " << cells[i]->GetY() << endl;
+                    exit(-1);
+
+                }
+            }
+        }
+    }
+    cout << "Total # of cells for Check(): " << numCells << endl;
+    cout << "Total # of cells from IO: " << numNodes << endl;
+    cout << "Total # of PlaceRow: " << numPlaceRow << endl;
 }

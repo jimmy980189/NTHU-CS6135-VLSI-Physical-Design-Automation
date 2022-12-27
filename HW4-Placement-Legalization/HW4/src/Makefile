@@ -4,10 +4,10 @@ CPPFLAGS = -g -std=c++11
 
 all:	hw4 
 
-hw4:	main.cpp placement.o
+hw4:	main.cpp header.h placement.o 
 	$(CC) $(CPPFLAGS) main.cpp placement.o -o ../bin/hw4
 
-floorplan.o:	placement.cpp placement.h header.h 
+floorplan.o:	header.h placement.cpp placement.h
 	$(CC) $(CPPFLAGS) -c placement.cpp 
 
 clean:

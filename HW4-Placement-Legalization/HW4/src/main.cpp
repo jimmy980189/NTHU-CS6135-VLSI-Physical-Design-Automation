@@ -30,7 +30,13 @@ int main(int argc, char* argv[]) {
     P.Abacus();
     steady_clock::time_point tAbacusEnd = steady_clock::now();
 
+    cout << "===========================[TEST]==========================" << endl;
+
+    //P.Test();
+
     cout << "==========================[OUTPUT]==========================" << endl;
+
+    P.Check();
 
     steady_clock::time_point tOutputStart = steady_clock::now();
     P.GenOutputFile(argv[2]);

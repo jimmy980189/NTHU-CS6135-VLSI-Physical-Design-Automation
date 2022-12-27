@@ -12,6 +12,7 @@ class Placement {
 
         pair<double, double> base;
         int rowHeight;
+        int siteWidth;
 
         vector<Row*> garbage;
 
@@ -20,13 +21,6 @@ class Placement {
         ~Placement() {
             for (auto i : garbage) delete i;
             for (auto i : nodes) delete i.second;
-            /*
-             *for (auto i : rows) {
-             *    for (auto j : i.second) {
-             *        delete j;
-             *    }
-             *}
-             */
         }
 
         void ReadInputFile(const char* filename);
@@ -35,12 +29,14 @@ class Placement {
             void ReadInputSclFile(string filename);
         void GenOutputFile(const char* filename);
 
+        void Abacus();
+        void PrintRow();
         void SplitSubRow();
 
         double Cost();
-        void Abacus();
-        pair<bool, int> PlaceRow(int idx, Node* node);
-        int ChooseCandidate(Node* node);
-        void PrintRow();
+        pair<bool, int> PlaceRow(Row* row, Node* node);
+
+        void Test();
+        void Check();
 };
 

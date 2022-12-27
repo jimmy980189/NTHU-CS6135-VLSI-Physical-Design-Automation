@@ -1,0 +1,9 @@
+NumNodes     : 6
+NumTerminals : 0
+
+a0         10        20
+a1         10        20
+a2         20        20
+a3         10        20
+a4         20        20
+a5         30        20
