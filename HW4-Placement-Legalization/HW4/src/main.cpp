@@ -1,5 +1,4 @@
 #include "placement.h"
-#include <bits/chrono.h>
 
 bool DEBUG = false;
 steady_clock::time_point tStart;
@@ -34,9 +33,11 @@ int main(int argc, char* argv[]) {
 
     //P.Test();
 
-    cout << "==========================[OUTPUT]==========================" << endl;
+    cout << "===========================[CHECK]=========================" << endl;
 
     P.Check();
+
+    cout << "==========================[OUTPUT]==========================" << endl;
 
     steady_clock::time_point tOutputStart = steady_clock::now();
     P.GenOutputFile(argv[2]);

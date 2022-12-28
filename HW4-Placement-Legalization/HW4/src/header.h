@@ -5,8 +5,10 @@
 #include <cmath>
 #include <map>
 #include <set>
+#include <unordered_set>
 #include <unordered_map>
 #include <climits>
+#include <cfloat>
 #include <chrono>
 #include <cstring>
 #include "color.h"
@@ -15,6 +17,9 @@
 
 using namespace std;
 using namespace chrono;
+
+extern int numStore;
+extern int numRestore;
 
 enum moveType { MOVABLE, TERMINAL };
 
@@ -26,6 +31,8 @@ class Node {
         moveType type = MOVABLE;
         pair<double, double> originalCoor;  //global
         pair<double, double> coordinates;   //legal
+                                            
+        double cost = 0;
 
         //for Cluster
         int clusterWidth;   // initial will be the same as the width of this node
@@ -61,12 +68,17 @@ class Node {
         moveType GetType() { return type; }
         pair<double, double> GetCoordinate() { return coordinates; }
         pair<double, double> GetOriginalCoor() { return originalCoor; }
-        double GetDisplacement() { 
-            return sqrt(pow(coordinates.first - originalCoor.first, 2) + pow(coordinates.second - originalCoor.second, 2));
+        double GetCost() { return cost; }
+        double GetDisplacement(bool write) { 
+            double tmp = sqrt(pow(coordinates.first - originalCoor.first, 2) + pow(coordinates.second - originalCoor.second, 2));
+            if (write)
+                cost = tmp;
+            return tmp;
         }
 
-        Node* GetLeft() { return left; }
-        Node* GetRight() { return right; }
+        inline Node* GetLeft() { return left; }
+        inline Node* GetRight() { return right; }
+
         void SetLeft(Node* l) { left = l; }
         void SetRight(Node* r) { right = r; }
 
@@ -75,6 +87,7 @@ class Node {
         void SetIsClusterHead() { isClusterHead = true; }
         void ResetIsClusterHead() { isClusterHead = false; }
 
+        void SetCost(double c) { cost = c; }
         void SetWidth(int w) { width = w; }
         void SetMoveType(moveType t) { type = t; }
         void SetX(double x) { coordinates.first = x; }
@@ -86,6 +99,7 @@ class Node {
         }
 
         inline void Store() {
+            ++numStore;
             backupClusterWeight = clusterWeight;
             backupClusterWidth = clusterWidth;
             backupLeft = left;
@@ -93,6 +107,7 @@ class Node {
             backupCoordinates = coordinates;
         }
         inline void Restore() {
+            ++numRestore;
             clusterWeight = backupClusterWeight;
             clusterWidth = backupClusterWidth;
             left = backupLeft;
@@ -124,9 +139,24 @@ class Row {
         int GetY() { return coordinates.second; }
         int GetRightX() { return coordinates.first + numSites * siteWidth; }
         int GetHeight() { return height; }
+        int GetWidth() { return numSites * siteWidth; }
         int GetNumSites() { return numSites; }
         int GetSiteWidth() { return siteWidth; }
         int GetWhiteSpace() { return whiteSpace; }
+        double Cost(bool write) {
+            double c = 0;
+            for (auto cell : cells) {
+                double tmp = cell->GetDisplacement(write);
+                c += tmp;
+            }
+            return c;
+        }
+        double GetCost() {
+            double c = 0;
+            for (auto cell : cells)
+                c += cell->GetCost();
+            return c;
+        }
         pair<int, int> GetCoordinate() { return coordinates; }
         pair<double, double> GetLowerRight() { return lowerRight; }
         vector<Node*>& GetCells() { return cells; }
@@ -166,7 +196,7 @@ class Row {
             //cout << "AlignCluster(): " << endl;
             Node* current = NULL;
 
-            for (int i = 0; i < cells.size(); ++i) {
+            for (size_t i = 0; i < cells.size(); ++i) {
                 int move = 0;
                 current = cells[i];
                 while (current->GetRight() != NULL) {
@@ -180,15 +210,27 @@ class Row {
 
         void Print() {
             cout << " ==============" << endl;
-            cout << "row.Print(): (" << coordinates.first << ", " << coordinates.second << ") " << endl;
+            cout << "row.Print(): (" << coordinates.first << ", " << coordinates.second << ") ";
+            cout << "width = " << numSites * siteWidth << endl;
             int cnt = 0;
-            for (int i = 0; i < cells.size(); ++i) {
+            for (size_t i = 0; i < cells.size(); ++i) {
                 int move = 0;
                 Node* head = cells[i];
                 cout << i << ": " << head->GetName() << ", (" << head->GetX() << ", " << head->GetY() << ")";
                 cout << " | width: " << head->GetWidth();
                 cout << " | right: " << head->GetX() + head->GetWidth() << endl;
             }
-            cout << endl << " ==============" << endl;
+            cout << " ==============" << endl;
+        }
+
+        bool CheckOverlap() {
+            for (size_t i = 1; i < cells.size(); ++i) {
+                if (cells[i]->GetX() < cells[i - 1]->GetRightX()) {
+                    cout << "ERROR at " << cells[i]->GetName() << endl;
+                    Print();
+                    return true;
+                }
+            }
+            return false;
         }
 };

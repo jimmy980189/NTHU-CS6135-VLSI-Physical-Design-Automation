@@ -6,9 +6,9 @@ class Placement {
         int numNodes;
         int numTerminals;
         int numRows;
-        map<string, Node*> nodes;
-        map<string, Node*> terminals;
-        map<int, set<Row*>> rows; 
+        unordered_map<string, Node*> nodes;
+        unordered_map<string, Node*> terminals;
+        unordered_map<int, set<Row*>> rows; 
 
         pair<double, double> base;
         int rowHeight;
@@ -30,13 +30,8 @@ class Placement {
         void GenOutputFile(const char* filename);
 
         void Abacus();
-        void PrintRow();
         void SplitSubRow();
-
-        double Cost();
         pair<bool, int> PlaceRow(Row* row, Node* node);
 
-        void Test();
         void Check();
 };
-
