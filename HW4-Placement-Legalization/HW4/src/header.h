@@ -26,8 +26,8 @@ enum moveType { MOVABLE, TERMINAL };
 class Node {
     private:
         string name;
-        int width;
-        int height;
+        int width = 0;
+        int height = 0;
         moveType type = MOVABLE;
         pair<double, double> originalCoor;  //global
         pair<double, double> coordinates;   //legal
@@ -37,7 +37,6 @@ class Node {
         //for Cluster
         int clusterWidth;   // initial will be the same as the width of this node
         int clusterWeight = 1;
-        bool isClusterHead = false;
         Node* left = NULL;
         Node* right = NULL;
 
@@ -49,7 +48,7 @@ class Node {
         pair<double, double> backupCoordinates;
 
     public:
-        Node(string name, int width, int height) : name(name), width(width), height(height) {
+        Node(string name, int w, int h) : name(name), width(w), height(h) {
             clusterWidth = width;
         }
         ~Node() {}
@@ -64,7 +63,6 @@ class Node {
         int GetOriginalY() { return originalCoor.second; }
         int GetClusterWidth() { return clusterWidth; }
         int GetClusterWeight() { return clusterWeight; }
-        bool IsClusterHead() { return isClusterHead; }
         moveType GetType() { return type; }
         pair<double, double> GetCoordinate() { return coordinates; }
         pair<double, double> GetOriginalCoor() { return originalCoor; }
@@ -84,8 +82,6 @@ class Node {
 
         void SetClusterWidth(int w) { clusterWidth = w; }
         void SetClusterWeight(int w) { clusterWeight = w; }
-        void SetIsClusterHead() { isClusterHead = true; }
-        void ResetIsClusterHead() { isClusterHead = false; }
 
         void SetCost(double c) { cost = c; }
         void SetWidth(int w) { width = w; }
@@ -125,8 +121,6 @@ class Row {
         int numSites;
         int whiteSpace;
 
-        pair<double, double> lowerRight = { 0, 0 };
-
     public:
         Row(pair<int, int> c, int h, int s, int n) : coordinates(c), height(h), siteWidth(s), numSites(n) {
             whiteSpace = n * s;
@@ -158,10 +152,7 @@ class Row {
             return c;
         }
         pair<int, int> GetCoordinate() { return coordinates; }
-        pair<double, double> GetLowerRight() { return lowerRight; }
         vector<Node*>& GetCells() { return cells; }
-
-        void UpdateLowerRight(pair<double, double> c) { lowerRight = c; }
 
         void AddCell(Node* n) { 
             whiteSpace -= n->GetWidth();
@@ -212,9 +203,7 @@ class Row {
             cout << " ==============" << endl;
             cout << "row.Print(): (" << coordinates.first << ", " << coordinates.second << ") ";
             cout << "width = " << numSites * siteWidth << endl;
-            int cnt = 0;
             for (size_t i = 0; i < cells.size(); ++i) {
-                int move = 0;
                 Node* head = cells[i];
                 cout << i << ": " << head->GetName() << ", (" << head->GetX() << ", " << head->GetY() << ")";
                 cout << " | width: " << head->GetWidth();

@@ -10,7 +10,7 @@ class Placement {
         unordered_map<string, Node*> terminals;
         unordered_map<int, set<Row*>> rows; 
 
-        pair<double, double> base;
+        double baseY;
         int rowHeight;
         int siteWidth;
 
@@ -28,6 +28,8 @@ class Placement {
             void ReadInputPlFile(string filename);
             void ReadInputSclFile(string filename);
         void GenOutputFile(const char* filename);
+
+        double Cost();
 
         void Abacus();
         void SplitSubRow();

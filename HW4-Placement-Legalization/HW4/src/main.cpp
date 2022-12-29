@@ -43,6 +43,8 @@ int main(int argc, char* argv[]) {
     P.GenOutputFile(argv[2]);
     steady_clock::time_point tOutputEnd = steady_clock::now();
 
+    cout << "cost = " << P.Cost() << endl;
+
     cout << "===========================[TIME]===========================" << endl;
 
     double inputTime = (double) duration_cast<microseconds>(tInputEnd - tInputStart).count() / 1000000;
