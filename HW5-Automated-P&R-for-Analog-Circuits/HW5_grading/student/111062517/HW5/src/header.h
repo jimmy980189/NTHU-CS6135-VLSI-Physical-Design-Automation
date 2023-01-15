@@ -125,7 +125,53 @@ class Die {
             this->_y2 = die_y2;
             this->numCurrentSources = numCurrentSources;
         }
-        ~Die() {}
+        ~Die() {
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numRow; ++j)
+                    delete cs_array[i][j];
+                delete [] cs_array[i];
+            }
+            delete [] cs_array;
+
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numM4Port; ++j) {
+                    for (int k = 0; k < 2; ++k)
+                        delete Via34_port2ME3[i][j][k];
+                    delete [] Via34_port2ME3[i][j];
+                }
+                delete [] Via34_port2ME3[i];
+            }
+            delete [] Via34_port2ME3;
+
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numM3; ++j)
+                    delete ME3_specialnet[i][j];
+                delete [] ME3_specialnet[i];
+            }
+            delete [] ME3_specialnet;
+
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numRow; ++j)
+                    delete ME4_specialnet_drain[i][j];
+                delete [] ME4_specialnet_drain[i];
+            }
+            delete [] ME4_specialnet_drain;
+
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numM4Port; j++)
+                    delete ME4_specialnet_port[i][j];
+                delete [] ME4_specialnet_port[i];
+            }
+            delete [] ME4_specialnet_port;
+
+            for (int i = 0; i < numRow; ++i) {
+                for (int j = 0; j < numRow; ++j)
+                    delete Via34_drain2ME3[i][j];
+                delete [] Via34_drain2ME3[i];
+            }
+            delete [] Via34_drain2ME3;
+       }
+
         void SetPos(int x1, int y1, int x2, int y2) {
             this->_x1 = x1;
             this->_y1 = y1;

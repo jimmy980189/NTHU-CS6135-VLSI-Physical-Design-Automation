@@ -157,9 +157,9 @@ for i in range(4):
 
 # 4. add 'Via34_port2ME3' component to 'component_list'
 # TODO
-# for i in range(4):
-    # for j in range(2):
-        # component_list.append(Via34_port2ME3[i][j])
+for i in range(4):
+    for j in range(2):
+        component_list.append(Via34_port2ME3[i][j])
 
 specialnet_list = []
 for i in range(4):
@@ -176,11 +176,6 @@ for i in range(4):
 for i in range(4):
     for j in range(4):
         component_list.append(Via34_drain2ME3[i][j])
-
-# TODO
-for i in range(4):
-    for j in range(2):
-        component_list.append(Via34_port2ME3[i][j])
 
 file_name = './DEF/CS_4.def'
 write_def(file_name, die, component_list, specialnet_list)

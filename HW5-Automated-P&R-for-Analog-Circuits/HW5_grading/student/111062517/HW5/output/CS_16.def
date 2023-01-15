@@ -140,6 +140,70 @@ COMPONENTS 160 ;
   + PLACED ( 72870 63400 ) N ;
 - Transistor63 MSBCS
   + PLACED ( 72870 73470 ) N ;
+- Via34_port2ME3_0 Via34
+  + PLACED ( 7410 0 ) N ;
+- Via34_port2ME3_1 Via34
+  + PLACED ( 80280 0 ) N ;
+- Via34_port2ME3_2 Via34
+  + PLACED ( 8160 1490 ) N ;
+- Via34_port2ME3_3 Via34
+  + PLACED ( 81030 1490 ) N ;
+- Via34_port2ME3_4 Via34
+  + PLACED ( 17820 10070 ) N ;
+- Via34_port2ME3_5 Via34
+  + PLACED ( 69870 10070 ) N ;
+- Via34_port2ME3_6 Via34
+  + PLACED ( 18570 11560 ) N ;
+- Via34_port2ME3_7 Via34
+  + PLACED ( 70620 11560 ) N ;
+- Via34_port2ME3_8 Via34
+  + PLACED ( 28230 20140 ) N ;
+- Via34_port2ME3_9 Via34
+  + PLACED ( 59460 20140 ) N ;
+- Via34_port2ME3_10 Via34
+  + PLACED ( 28980 21630 ) N ;
+- Via34_port2ME3_11 Via34
+  + PLACED ( 60210 21630 ) N ;
+- Via34_port2ME3_12 Via34
+  + PLACED ( 38640 30210 ) N ;
+- Via34_port2ME3_13 Via34
+  + PLACED ( 49050 30210 ) N ;
+- Via34_port2ME3_14 Via34
+  + PLACED ( 39390 31700 ) N ;
+- Via34_port2ME3_15 Via34
+  + PLACED ( 49800 31700 ) N ;
+- Via34_port2ME3_16 Via34
+  + PLACED ( 49050 40280 ) N ;
+- Via34_port2ME3_17 Via34
+  + PLACED ( 38640 40280 ) N ;
+- Via34_port2ME3_18 Via34
+  + PLACED ( 49800 41770 ) N ;
+- Via34_port2ME3_19 Via34
+  + PLACED ( 39390 41770 ) N ;
+- Via34_port2ME3_20 Via34
+  + PLACED ( 59460 50350 ) N ;
+- Via34_port2ME3_21 Via34
+  + PLACED ( 28230 50350 ) N ;
+- Via34_port2ME3_22 Via34
+  + PLACED ( 60210 51840 ) N ;
+- Via34_port2ME3_23 Via34
+  + PLACED ( 28980 51840 ) N ;
+- Via34_port2ME3_24 Via34
+  + PLACED ( 69870 60420 ) N ;
+- Via34_port2ME3_25 Via34
+  + PLACED ( 17820 60420 ) N ;
+- Via34_port2ME3_26 Via34
+  + PLACED ( 70620 61910 ) N ;
+- Via34_port2ME3_27 Via34
+  + PLACED ( 18570 61910 ) N ;
+- Via34_port2ME3_28 Via34
+  + PLACED ( 80280 70490 ) N ;
+- Via34_port2ME3_29 Via34
+  + PLACED ( 7410 70490 ) N ;
+- Via34_port2ME3_30 Via34
+  + PLACED ( 81030 71980 ) N ;
+- Via34_port2ME3_31 Via34
+  + PLACED ( 8160 71980 ) N ;
 - Via34_drain2ME3_0 Via34
   + PLACED ( 7410 7080 ) N ;
 - Via34_drain2ME3_1 Via34
@@ -268,70 +332,6 @@ COMPONENTS 160 ;
   + PLACED ( 81030 67500 ) N ;
 - Via34_drain2ME3_48 Via34
   + PLACED ( 80280 77570 ) N ;
-- Via34_port2ME3_0 Via34
-  + PLACED ( 7410 0 ) N ;
-- Via34_port2ME3_1 Via34
-  + PLACED ( 80280 0 ) N ;
-- Via34_port2ME3_2 Via34
-  + PLACED ( 8160 1490 ) N ;
-- Via34_port2ME3_3 Via34
-  + PLACED ( 81030 1490 ) N ;
-- Via34_port2ME3_4 Via34
-  + PLACED ( 17820 10070 ) N ;
-- Via34_port2ME3_5 Via34
-  + PLACED ( 69870 10070 ) N ;
-- Via34_port2ME3_6 Via34
-  + PLACED ( 18570 11560 ) N ;
-- Via34_port2ME3_7 Via34
-  + PLACED ( 70620 11560 ) N ;
-- Via34_port2ME3_8 Via34
-  + PLACED ( 28230 20140 ) N ;
-- Via34_port2ME3_9 Via34
-  + PLACED ( 59460 20140 ) N ;
-- Via34_port2ME3_10 Via34
-  + PLACED ( 28980 21630 ) N ;
-- Via34_port2ME3_11 Via34
-  + PLACED ( 60210 21630 ) N ;
-- Via34_port2ME3_12 Via34
-  + PLACED ( 38640 30210 ) N ;
-- Via34_port2ME3_13 Via34
-  + PLACED ( 49050 30210 ) N ;
-- Via34_port2ME3_14 Via34
-  + PLACED ( 39390 31700 ) N ;
-- Via34_port2ME3_15 Via34
-  + PLACED ( 49800 31700 ) N ;
-- Via34_port2ME3_16 Via34
-  + PLACED ( 49050 40280 ) N ;
-- Via34_port2ME3_17 Via34
-  + PLACED ( 38640 40280 ) N ;
-- Via34_port2ME3_18 Via34
-  + PLACED ( 49800 41770 ) N ;
-- Via34_port2ME3_19 Via34
-  + PLACED ( 39390 41770 ) N ;
-- Via34_port2ME3_20 Via34
-  + PLACED ( 59460 50350 ) N ;
-- Via34_port2ME3_21 Via34
-  + PLACED ( 28230 50350 ) N ;
-- Via34_port2ME3_22 Via34
-  + PLACED ( 60210 51840 ) N ;
-- Via34_port2ME3_23 Via34
-  + PLACED ( 28980 51840 ) N ;
-- Via34_port2ME3_24 Via34
-  + PLACED ( 69870 60420 ) N ;
-- Via34_port2ME3_25 Via34
-  + PLACED ( 17820 60420 ) N ;
-- Via34_port2ME3_26 Via34
-  + PLACED ( 70620 61910 ) N ;
-- Via34_port2ME3_27 Via34
-  + PLACED ( 18570 61910 ) N ;
-- Via34_port2ME3_28 Via34
-  + PLACED ( 80280 70490 ) N ;
-- Via34_port2ME3_29 Via34
-  + PLACED ( 7410 70490 ) N ;
-- Via34_port2ME3_30 Via34
-  + PLACED ( 81030 71980 ) N ;
-- Via34_port2ME3_31 Via34
-  + PLACED ( 8160 71980 ) N ;
 END COMPONENTS
 
 SPECIALNETS 112 ;

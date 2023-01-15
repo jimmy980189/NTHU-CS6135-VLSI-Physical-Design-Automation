@@ -17,6 +17,11 @@ void Die::AddList() {
             component_list.push_back(cs_array[i][j]);
 
     for (int i = 0; i < numRow; ++i)
+        for (int j = 0; j < numM4Port; ++j)
+            for (int k = 0; k < 2; ++k)
+                component_list.push_back(Via34_port2ME3[i][j][k]);
+
+    for (int i = 0; i < numRow; ++i)
         for (int j = 0; j < numM3; ++j)
             specialnet_list.push_back(ME3_specialnet[i][j]);
 
@@ -31,11 +36,6 @@ void Die::AddList() {
     for (int i = 0; i < numRow; ++i)
         for (int j = 0; j < numRow; ++j)
             component_list.push_back(Via34_drain2ME3[i][j]);
-
-    for (int i = 0; i < numRow; ++i)
-        for (int j = 0; j < numM4Port; ++j)
-            for (int k = 0; k < 2; ++k)
-                component_list.push_back(Via34_port2ME3[i][j][k]);
 }
 
 void Die::WriteDef(const char* filename) {
@@ -107,7 +107,6 @@ void Die::WriteDef(const char* filename) {
 
 void Die::CreateCSarray() {
     cout << "[CreateCSarray()]" << endl;
-    cout << numRow << " * " << numRow << endl;
 
     cs_array = new Component** [numRow];
     for (int i = 0; i < numRow; ++i) {
@@ -140,9 +139,6 @@ void Die::CreateVerticalME3() {
             ME3_specialnet[i][j] = new SpecialNet(inst_name, layer, x1, _y1, x2, _y2);
         }
     }
-    for (int i = 0; i < numRow; ++i)
-        for (int j = 0; j < numM3; ++j)
-            cout << ME3_specialnet[i][j]->GetInstName() << " " << ME3_specialnet[i][j]->GetLayer() << endl;
 }
 
 void Die::CreateME4Drain() {
