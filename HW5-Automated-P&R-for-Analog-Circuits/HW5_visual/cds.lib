@@ -1,0 +1,2 @@
+SOFTINCLUDE /tools/linux/cadence/IC/IC_06.18.250/share/cdssetup/cds.lib
+DEFINE CSarray /users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual/CSarray

@@ -1,2 +1,2 @@
 student id, python, 4, 16, 36, 64, 100, status
-111062517, pass, fail, fail, fail, fail, fail, Cannot open output for testcase 4. Cannot open output for testcase 16. Cannot open output for testcase 36. Cannot open output for testcase 64. Cannot open output for testcase 100.
+111062517, pass, pass, pass, pass, pass, pass,

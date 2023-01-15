@@ -1,0 +1,19 @@
+
+********************************************************************************
+Product   : Virtuoso(R) DEF In 
+Program   : @(#)$CDS: defin version 6.1.8-64b 05/03/2022 19:59 (cpgbld01) $
+SubVersion: sub-version  IC6.1.8-64b.500.25 
+Started at: 15-Jan-2023  16:48:32
+User Name : hccheng22
+Host Name : ic51
+Directory : /users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual
+DB Version: 	20220503 (SJ)
+CADENCE Design Systems, Inc.
+********************************************************************************
+Running: defin -lib CSarray -def "/users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual/DEF/CS_4.def"
+WARNING: (OALEFDEF-50177): /users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual/DEF/CS_4.def(12-16) : COMPONENT Transistor0: The referenced cell 'MSBCS' does not have a prBoundary object. The cell data extent will, therefore, be used which may cause incorrect cell placement.
+WARNING: (OALEFDEF-50177): /users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual/DEF/CS_4.def(46-48) : COMPONENT Via34_drain2ME3_0: The referenced cell 'Via34' does not have a prBoundary object. The cell data extent will, therefore, be used which may cause incorrect cell placement.
+
+Elapsed Time: 0.3s
+
+defin translation completed (errors: 0, warnings: 2).

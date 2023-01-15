@@ -1,0 +1,16 @@
+#
+# Edit Lock-Stake file. CAUTION: Please do not change.
+#
+# Information about current Edit Lock Owner.
+#
+LockStakeVersion               1.1
+LoginName                      hccheng22
+HostName                       ic51
+ProcessIdentifier              167385
+ProcessCreationTime_UTC        1673772463
+ProcessCreationTime_Readable   Sun Jan 15 16:47:43 2023 CST
+AppIdentifier                  OA File System Design Manager
+OSType                         unix
+ReasonForPlacingEditLock       OpenAccess edit lock
+FilePathUsedToEditLock         /users/student/mr111/hccheng22/private/pda/HW5-Automated-P&R-for-Analog-Circuits/HW5_visual/CSarray/CS_APR/layout/layout.oa.cdslck
+TimeEditLocked                 Sun Jan 15 16:48:44 2023 CST
